@@ -1,0 +1,19 @@
+@name
+@inputs 
+@outputs 
+@persist I
+@trigger 
+interval(100)
+function void createSoldier(Index){
+holoCreate(Index)
+holoModel(Index,"models/player/soldier.mdl")
+holoParent(Index,entity())
+holoAnim(Index,"RUN_SECONDARY")
+holoSetPose(Index,"move_scale",1)
+holoSetPose(Index,"move_x",1)
+}
+if(first()){
+createSoldier(1)
+}
+I+=0.5
+entity():setPos(entity():pos()+vec(I,0,0))

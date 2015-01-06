@@ -1,0 +1,64 @@
+@name Global Chat Sounds
+@inputs 
+@outputs 
+@persist Chatter:entity ChatterSaid:array I Players:array
+@trigger 
+Chatter = lastSpoke()
+ChatterSaid = lastSpoke():lastSaid():explode(" ")
+Players = players()
+runOnChat(1)
+if(chatClk()){
+    
+
+if(ChatterSaid[1,string]:sub(0,2):lower() == "hi"){
+for(I=1,Players:count()){
+Players[I,entity]:soundPlay(I*random(1,100),0.4,"vo/npc/male01/hi0" + randint(1,2) +".wav")
+}
+}
+
+if(ChatterSaid[1,string]:sub(0,3):lower() == "yea" || ChatterSaid[1,string]:sub(0,3):lower() == "yus" || ChatterSaid[1,string]:sub(0,3):lower() == "yes" || ChatterSaid[1,string]:sub(0,3):lower() == "yep" || ChatterSaid[1,string]:sub(0,3):lower() == "yup"){
+for(I=1,Players:count()){
+Players[I,entity]:soundPlay(I*random(1,100),1.213,"vo/npc/barney/ba_yell.wav")
+}
+}
+
+if(ChatterSaid[1,string]:sub(0,2):lower() == "uh" || ChatterSaid[1,string]:sub(0,3):lower() == "ugh" || ChatterSaid[1,string]:sub(0,4):lower() == "moan"){
+for(I=1,Players:count()){
+Players[I,entity]:soundPlay(I*random(1,100),2.798,"vo/npc/male01/moan0" + randint(1,5) +".wav")
+}
+}
+
+if(ChatterSaid[1,string]:sub(0,2):lower() == "ow" || ChatterSaid[1,string]:sub(0,4):lower() == "owch" || ChatterSaid[1,string]:sub(0,4):lower() == "ouch"){
+for(I=1,Players:count()){
+Sounds = array("vo/npc/male01/imhurt01.wav","vo/npc/male01/imhurt02.wav","vo/npc/male01/pain01.wav","vo/npc/male01/pain02.wav","vo/npc/male01/pain03.wav","vo/npc/male01/pain04.wav","vo/npc/male01/pain05.wav","vo/npc/male01/pain06.wav","vo/npc/male01/pain07.wav","vo/npc/male01/pain08.wav","vo/npc/male01/pain09.wav")
+Players[I,entity]:soundPlay(I*random(1,100),0.861,Sounds[randint(1,Sounds:count()),string])
+}
+}
+
+if(ChatterSaid[1,string]:sub(0,4):lower() == "help" || ChatterSaid[1,string]:sub(0,4):lower() == "halp"){
+for(I=1,Players:count()){
+Players[I,entity]:soundPlay(I*random(1,100),0.467,"vo/npc/male01/help01.wav")
+}
+}
+
+if(ChatterSaid[1,string]:sub(0,2):lower() == "no" & ChatterSaid[1,string]:sub(0,3):lower() != "not"){
+for(I=1,Players:count()){
+Sounds = array("vo/npc/alyx/no01.wav","vo/npc/alyx/no02.wav","vo/npc/male01/no01.wav","vo/npc/male01/no02.wav")
+Players[I,entity]:soundPlay(I*random(1,100),1.385,Sounds[randint(1,Sounds:count()),string])
+}
+}
+
+if(ChatterSaid[1,string]:sub(0,2):lower() == "lo" || ChatterSaid[1,string]:sub(0,4):lower() == "rofl" || ChatterSaid[1,string]:sub(0,3):lower() == "lul" || ChatterSaid[1,string]:sub(0,4):lower() == "lmao"){
+for(I=1,Players:count()){
+Players[I,entity]:soundPlay(I*random(1,100),1.463,"vo/npc/barney/ba_laugh0" + randint(1,4) + ".wav")
+}
+}
+
+if(ChatterSaid[1,string]:sub(0,6):lower() == "cheese"){
+for(I=1,Players:count()){
+Players[I,entity]:soundPlay(I*random(1,100),5,"vo/npc/male01/question06.wav")
+}
+}
+
+#vo/npc/male01/question06.wav Cheese
+}

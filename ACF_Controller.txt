@@ -1,0 +1,44 @@
+@name ACF Controller
+@inputs W A S D Shift
+@outputs Throttle Gear Length Constant Damping Strength
+runOnTick(1)
+
+if(first())
+{ 
+Gear = 1
+}
+###########
+if(W == 1){ 
+    if(Gear == 8){ 
+    Gear = 1 Throttle = 100 
+    } 
+        else{ 
+        Throttle = 100 
+            }
+}
+else{ 
+Throttle = 0
+}
+##########
+if(S == 1){ 
+Gear = 8 Throttle = 100
+}
+##########
+if(D == 1){
+Length = 28
+}
+elseif(A == 1){
+Length = 39
+}
+else{Length = 34}
+##########
+if(Shift == 1){
+Throttle = 200
+}
+
+Constant = 50000
+Damping = 4000
+Strength = 10000
+if (dupefinished()){
+reset()
+}

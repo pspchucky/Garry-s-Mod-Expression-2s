@@ -1,0 +1,11 @@
+@name doallPlayers
+@inputs 
+@outputs 
+@persist 
+@trigger 
+
+Players = players()
+
+for(I=1,numPlayers()){
+concmd("ev uammo \""+Players[I,entity]:name()+"\" 0")   
+}

@@ -1,0 +1,50 @@
+@name OBJ Loader [Cake's Spin]
+@inputs 
+@outputs 
+@persist Model:string Multiplier:number Vertex:table Index:number Line Percent
+@trigger
+
+interval( 150 )
+
+if ( first() ) {
+    
+    Model = "models/sprops/cuboids/height06/size_1/cube_6x6x6.mdl"
+    ModelSize = 6 * 2 * 2.54
+    
+    Centimeter = 2.54
+    Inches = 0.393701
+    
+    Multiplier = 1000 * Inches + ModelSize * Centimeter
+    Vertex = table()
+    
+    fileLoad("objdata.txt")
+    
+    Index = 1
+    
+}
+if(fileLoaded()){
+File = fileRead()   
+FileLines = File:explode("\n")
+if(FileLines:count()>=Line){
+while(perf()){
+Vertex:insertString(Line,FileLines[Line,string]) 
+Line++
+Percent = Line/FileLines:count()
+setName(clamp(round(Percent*100,2),0,100)+"% loaded.")
+}
+}else{
+Vector = Vertex[ Index, string ]:explode( " " )
+Vx = Vector[ 1, string ]:toNumber()
+Vy = Vector[ 2, string ]:toNumber()
+Vz = Vector[ 3, string ]:toNumber()
+Entity = propSpawn( Model, entity():pos() + vec( Vx * Multiplier, Vz * Multiplier, Vy * Multiplier + 250 ), 1 )
+#Entity:setColor( vec( random( 255 ), 255, 255 ), 255 )
+#Entity:setMaterial( "models/debug/debugwhite" )
+
+#holoCreate(Index,entity():pos() + vec( Vx * Multiplier, Vz * Multiplier, Vy * Multiplier + 250 ))
+if ( Index < Vertex:count() ) {
+    Index = Index + 1
+
+}
+}
+}

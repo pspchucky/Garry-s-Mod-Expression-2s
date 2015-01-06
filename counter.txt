@@ -1,0 +1,9 @@
+@name Counter
+@inputs Up Down
+@outputs Value
+runOnTick(1)
+if(Up==1){Value +=Up}
+if(Down==1){Value -=Down}
+
+if(Value==6){Value==0}
+if(Value==-6){Value==0}

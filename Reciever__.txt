@@ -1,0 +1,6 @@
+@name Reciever  
+interval(10000)
+gShare(1)
+gSetGroup("Hi")
+print("Recieved this message from the sender: "+ gGetStr("Mega"))
+

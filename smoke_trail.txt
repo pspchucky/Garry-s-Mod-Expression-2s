@@ -1,0 +1,13 @@
+@name SetAllPlayersTrails
+@persist Players:array
+Players = players()
+for(I=1,Players:count()){
+holoCreate(I)
+holoScale(I,vec(0,0,0))
+holoVisible(I,Players[I,entity],0)
+holoPos(I,Players[I,entity]:pos())
+holoParent(I,Players[I,entity])
+holoEntity(I):setTrails(5, 80, 5, "trails/laser", teamColor(Players[I,entity]:team()), 255)
+holoEntity(I):setMaterial("models/shiny")
+holoEntity(I):setColor((255),(255),(255))
+}

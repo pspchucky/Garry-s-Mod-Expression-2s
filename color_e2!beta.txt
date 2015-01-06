@@ -1,0 +1,9 @@
+@name Color E2!
+@persist Hue
+@trigger 
+runOnTick(1)
+Hue++
+if(Hue>=360){Hue=0}
+Rave = hsv2rgb(vec(Hue,1,1))
+gSetGroup("RaveColor")
+gSetVec("A",hsv2rgb(vec(Hue,1,1)))

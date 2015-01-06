@@ -1,0 +1,11 @@
+@name SpeedOMeter Beta
+@outputs Speed
+@persist I
+@trigger 
+
+runOnTick(1)
+VelX = entity():vel():x()
+VelY = entity():vel():y()
+VelZ = entity():vel():z()
+Speed=sqrt(VelX^2+VelY^2+VelZ^2)*(15/352)
+setName("Current speed of this E2: " + round(Speed))

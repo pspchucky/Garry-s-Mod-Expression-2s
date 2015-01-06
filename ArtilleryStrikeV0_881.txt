@@ -1,0 +1,116 @@
+@name Artillery Strike!
+@outputs [A M N O Lock]:number Att1 Original:vector Selected Verion:string Bombs:array SpawnVecs:array Version:string
+@model models/props_borealis/bluebarrel001.mdl
+    if (first())
+    {
+        runOnTick(1)
+        runOnChat(1)
+        Version = "0.88"
+        Selected = 0
+        holoCreate(1)
+        holoColor(1,vec(10,255,10))
+        holoModel(1,"cylinder")
+        holoScale(1,vec(7,7,0.1))
+        holoCreate(2)
+        holoColor(2,vec(255,255,10))
+        holoModel(2,"cylinder")
+        holoScale(2,vec(4,4,0.2))
+        holoCreate(3)
+        holoColor(3,vec(255,255,10))
+        holoModel(3,"cylinder")
+        holoScale(3,vec(1,1,0.3))
+        setName("Artillery Strike by Cake" + " [Version " + Version + "] | Not Armed |")
+        timer("Time",60000)
+        Tool = owner():weapon():type() == "gmod_tool"
+    }
+    if (duped()){print("This E2 has been duped! Removing ENTIRE Dupe.")
+selfDestructAll()
+}
+    
+    M -=6
+    N += 6
+    O +=cos(40)
+    A = 90
+    Att1 = owner():keyAttack1()
+    
+    if ($Att1 & Att1) { # Runs only once if the user holds the LMB down, instead of spamming it
+        Selected = !Selected
+        Original = holoEntity(1):pos(),holoEntity(2):pos(),holoEntity(3):pos()
+        holoColor(1,vec(255,10,10))
+        timer("1",0)
+}
+if ($Tool & Tool)
+{
+print("You need a pistol to use this.")
+print("Here is a pistol. [O Access Required] (E2 Concmds need to be on.)")
+concmd("d3a weapon " + owner():steamID() + " weapon_pistol")
+}
+    if (clk("1")) {
+        setName("Incoming Attack at Corrds" + Original)
+        holoEntity(1):soundPlay(1,0,"/ambient/alarms/alarm_citizen_loop1.wav")
+}
+    
+    if (Selected == 1) {
+        holoEntity(1):setPos(Original)
+        holoEntity(2):setPos(Original)
+        holoEntity(3):setPos(Original)
+        setName("Incoming Attack at Corrds" + Original)
+        entity():setColor(255,0,0)
+        timer("A",4000)
+}
+
+    elseif(owner():weapon():type() == "weapon_pistol" && Selected == 0){
+        holoAng(1,ang(0,N,0))
+        holoPos(1,owner():aimPos())
+        holoColor(1,vec(10,255,10))
+        holoAng(2,ang(0,M,0))
+        holoPos(2,owner():aimPos())
+        holoColor(2,vec(255,255,10))
+        holoAng(3,ang(0,N,0))
+        holoPos(3,owner():aimPos())
+        holoColor(3,vec(255,10,10))
+entity():setAlpha(255)
+entity():setColor(255,255,0)
+setName("Artillery Strike by Cake" + " [Version " + Version + "] | Armed! |")
+if(Bombs:count() > 0){
+for(I=1,Bombs:count()){
+Bombs[I,entity]:propBreak()
+}
+}
+}
+else{
+        holoAng(1,ang(0,N,0))
+        holoPos(1,entity():pos())
+        holoColor(1,vec(10,255,10))
+        holoAng(2,ang(0,M,0))
+        holoPos(2,entity():pos())
+        holoColor(2,vec(255,255,10))
+        holoAng(3,ang(0,N,0))
+        holoPos(3,entity():pos())
+        holoColor(3,vec(255,10,10))
+        Att1 = 1
+        entity():setAlpha(255)
+        entity():setColor(10,255,10)
+        setName("Artillery Strike by Cake" + " [Version " + Version + "] | Not Armed |")
+}
+
+if (clk("A")){
+SpawnVecs = array(vec(0,5,5000),vec(0,-50,5000),vec(100,-100,5000),vec(100,100,5000))
+for(I=1,SpawnVecs:count()){
+Bomb = propSpawn("models/props_phx/ww2bomb.mdl",Original+ SpawnVecs[I,vector],0)
+Bomb:propGravity(0)
+Bomb:setMass(10000)
+Bomb:applyForce(vec(0,0,-80)*16*Bomb:mass())
+Bomb:setTrails(10,20,5,"trails/lol",Bomb:pos(),255)
+#Bomb:setAng(ang(A,0,0))
+Bombs:pushEntity(Bomb)
+}
+timer("B",3950)
+}
+
+if (clk("B")){
+for(I=1,Bombs:count()){
+Bombs[I,entity]:propBreak()
+}
+reset()
+}

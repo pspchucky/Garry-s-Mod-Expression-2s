@@ -1,0 +1,16 @@
+@name Think Random Numbers
+@inputs 
+@outputs 
+@persist I Rand 
+@trigger 
+@model models/sprops/rectangles/size_3/rect_24x24x3.mdl
+interval(1000)
+I++
+Rand = randint(1,9)
+holoModel(1,"models/sprops/misc/alphanum/alphanum_"+Rand+".mdl")
+if(first()){
+gSetGroup("numbers")
+entity():setPos(entity():pos()+vec(0,0,randint(10,20)))
+holoCreate(1)
+holoPos(1,entity():pos()+vec(0,0,randint(10,40)))
+}

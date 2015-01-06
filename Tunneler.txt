@@ -1,0 +1,62 @@
+@name Tunneler
+@inputs E:entity
+@outputs RGB:vector
+@persist Lock P Detection PlaySound A:ranger I J K VelX VelY VelZ HitEntity:entity Highscore HighscoreP:string
+@trigger 
+runOnTick(1)
+while(perf()){
+A = ranger(300)
+rangerIgnoreWorld(1)
+holoCreate(1,A:pos())
+if(first()){
+Lock = 0   
+RGB = vec(0,0,0)
+Highscore = 0
+HighscoreP = owner():name()
+gSetGroup("Train_speed_highscorez")
+}
+Detection = A:hit()
+HitEntity = A:entity()
+if($Detection & Detection & Lock == 0){
+Lock = 1
+timer("PlaySound",0)
+}
+if(clk("PlaySound")){
+VelX = HitEntity:vel():x()
+VelY = HitEntity:vel():y()
+VelZ = HitEntity:vel():z()
+Speed=sqrt(VelX^2+VelY^2+VelZ^2)*(15/352)
+if(HitEntity:owner():name() != ""){
+P++
+Calc = 0.053
+concmd("say " + HitEntity:owner():name() + " is passing through the tunnel going " + round(Speed) + " MPH and will arrive in " + round(round(Speed)/Calc,3)*0.01 + " seconds!")   
+if(gGetStr(P) == ""){
+gSetStr(P,HitEntity:owner():name() + " " + round(Speed))   
+}else{
+P++
+gSetStr(P,HitEntity:owner():name() + " " + round(Speed))
+}
+}
+I++
+K++
+#print("isPlayer? : "+HitEntity:isPlayer() + " Velocity = "+HitEntity:vel() + "VelocityL: " + HitEntity:velL() + "Owner : " + HitEntity:owner():name())
+E:soundPlay(I,5,"ambient/alarms/train_crossing_bell_loop1.wav")  
+#entity():soundPlay(K,3.5,"ambient/alarms/train_crossing_bell_loop1.wav")  
+timer("Flick",0)
+timer("reset",6500)
+}
+if(clk("reset")){
+RGB = vec(0,0,0)   
+Lock = 0
+J = 0
+}
+if(clk("Flick") & J <= 16){
+J++
+RGB = vec(255,0,0)   
+timer("Flock",150)
+}
+if(clk("Flock")){
+RGB = vec(0,255,0)
+timer("Flick",150)   
+}
+}

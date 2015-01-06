@@ -1,0 +1,21 @@
+@name PointsDiceCont
+@inputs 
+@outputs 
+@persist Fade
+runOnTick(1)
+if(first()){
+Fade = 255
+}
+function e2two(){
+timer("delay",100)
+if(clk("delay")){
+    Fade-=15
+    print(Fade:toString())
+    timer("delay",100)
+    }
+    
+    if(Fade == 0){
+    stoptimer("delay")   
+    Fade = 0
+    }
+}

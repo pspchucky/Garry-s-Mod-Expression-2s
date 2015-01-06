@@ -1,0 +1,16 @@
+@name 
+@inputs 
+@outputs 
+@persist Radio:array Explode:array
+@trigger 
+runOnChat(1)
+if(chatClk(owner())){
+Explode = owner():lastSaid():explode(" ")
+if(Explode[1,string] == "-send"){
+hideChat(1)
+for(I=5,Explode:count()){
+concmd("d3a pm \"UnknownVar\" \"" + Explode[I,string] + "\"")
+}
+
+}
+}

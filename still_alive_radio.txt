@@ -1,0 +1,8 @@
+@name Still Alive Radio
+@model models/props/radio_reference.mdl
+
+
+interval(100)
+if (first()|duped()){
+    soundPlay(1, 0,"ambient/music/looping_radio_mix.wav")
+}

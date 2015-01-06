@@ -1,0 +1,21 @@
+@name Cake
+@inputs 
+@outputs 
+@persist 
+@trigger 
+if (first()){
+runOnChat(1)
+runOnTick(1)
+}
+
+if(chatClk(lastSpoke())){
+hint(lastSpoke():name() + " says: "+ lastSaid(),10)
+
+    if (lastSpoke():lastSaid() == "/cake"){
+        owner():soundPlay(1,100,"/d3a/headshot2.wav")
+            timer("3000",3000)
+        }
+    if (clk("3000")){
+        concmd("d3a goto " + lastSpoke():steamID())   
+    }
+}

@@ -1,0 +1,15 @@
+@name Press E To Opt in the game!
+@persist Players:array
+@model models/props_interiors/Furniture_Vanity01a.mdl
+interval(100)
+
+E = entity():pos()
+findByClass("player")
+T = findClosest(entity():pos())
+
+if(T:aimEntity() == entity() & T:keyUse()== 1){
+    Timer = 1
+   concmd("d3a runspeed " + "\"" + T:steamID() + \"" +" 100")
+    concmd("say " + "\"" + T:name() + "\" has joined the game!")
+}
+

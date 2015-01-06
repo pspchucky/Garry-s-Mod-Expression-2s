@@ -1,0 +1,21 @@
+@name Bots
+@persist Bots:array Model:string
+Bots = array("Bot01",
+"Bot02",
+"Bot03",
+"Bot04",
+"Bot05",
+"Bot06",
+"Bot07",
+"Bot08",
+"Bot09",
+"Bot10",
+"Bot11",
+"Bot12",
+"Bot13",
+"Bot14",
+"Bot15")
+Model = "models/props_interiors/VendingMachineSoda01a.mdl"
+for(I=1,Bots:count()){
+concmd("d3a setmodel \"" + Bots[I,string] + "\" \"" + Model + "\"")
+}

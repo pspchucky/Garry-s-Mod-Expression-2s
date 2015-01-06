@@ -1,0 +1,85 @@
+@name Airwalk Chip
+@inputs 
+@outputs FDir:vector UDir B C Index Add:entity
+@persist Ent:entity Tr:ranger Props:array Enable SpawnPos:vector Model:string
+@trigger 
+
+interval(10)
+
+if(first()){
+    Ent = owner()
+    rangerPersist(1)
+    rangerFilter(Ent)
+    #propSpawnEffect(0)
+    Enable = 0
+    Model = "models/hunter/blocks/cube05x05x025.mdl"
+    Index = 0
+    rangerFilter(Ent)
+    hint("Don't run, just walk(Usually your alt button) slowly if not tap movement keys for proper platform creation",3)
+    hint("Press R to clear all props for the moment",3)
+    holoCreate(1)
+    holoModel(1,"hqsphere")
+    holoEntity(1):setTrails(30,30,20,"trails/laser",randvec(0,255),255)
+}
+FDir = Ent:forward()
+UDir = Ent:eye():z()
+B = Props:count()
+if((UDir >= 0.1)&(Enable == 1)){ #change to 0.1
+    Tr = rangerOffset(40,Ent:pos(),vec(FDir:x(),FDir:y(),0.25))
+    if(!Tr:hit()){
+        Add = Props[B + 1, entity]=propSpawn(Model,Ent:pos()+FDir*50+vec(0,0,5),FDir:toAngle(),1)
+        
+        
+    }
+}
+if((UDir <= -0.1)&(Enable == 1)){ #change to -0.1
+    Tr =rangerOffset(40,Ent:pos(),vec(FDir:x(),FDir:y(),-0.75))
+    if(!Tr:hit()){
+        Props[B + 1, entity]=propSpawn(Model,Ent:pos()+FDir*15+vec(0,0,-10),FDir:toAngle(),1)
+        
+    }
+}
+if((UDir > -0.1)&(UDir < 0.1)&(Enable == 1)){
+    Tr =rangerOffset(40,Ent:pos(),vec(FDir:x(),FDir:y(),-0.25))
+    if(!Tr:hit()){
+        SpawnPos = Props[B,entity]:pos()+FDir*26
+        if((toString(Props[B,entity]) != "(null)")&(rangerOffset(40,Ent:pos(),vec(0,0,-1)):entity() == Props[B,entity])){
+            Props[B + 1, entity]=propSpawn(Model,SpawnPos,FDir:toAngle(),1)
+        }else{
+            Props[B + 1, entity]=propSpawn(Model,Ent:pos()+FDir*15+vec(0,0,-6),FDir:toAngle(),1)
+        }
+        
+    }
+}
+    #[foreach(K,V:entity = Props){
+        V:setColor(randvec(0,255))
+        #V:setAng(V:angles() + ang(0,1,0))
+        holoPos(1,V:pos())
+    }]#
+
+
+if(Ent:keyReload()){
+    foreach(K,V:entity = Props){
+        V:propDelete()
+    }
+    Index = 0
+}
+if((Ent:lastSaid():lower() == ".enable")&(Enable == 0)){
+    Enable = 1
+    concmd("+walk")
+    hint("Platform Generation Enabled.",3)
+}elseif((Ent:lastSaid():lower() == ".disable")&(Enable == 1)){
+    Enable = 0
+    concmd("-walk")
+    hint("Platform Generation Disabled.",3)
+}
+
+    
+
+
+if(B > 20){
+        
+        Props:shiftEntity():propDelete()
+        
+        Index = 19
+}

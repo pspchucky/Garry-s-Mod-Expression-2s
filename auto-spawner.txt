@@ -1,0 +1,35 @@
+@name Auto-Spawner
+@persist Minge Player:entity  Players:array Minges:array
+if (first()){
+runOnTick(1)
+Minge = 10026
+Players = players()
+timer("Spawn",5000)
+}
+if (clk("Spawn")){
+Spawn = 1
+timer("Cool",0)
+}
+if (clk("Cool"))
+{
+Spawn = 0
+}
+
+for (I = 1, numPlayers() ) 
+    {
+        Player = Players[I, entity]
+        
+        if (Player:team() == Minge) 
+        {
+            Players:remove(I)
+            Minges:pushEntity(Player)
+            break
+     }
+    }
+if (Spawn== 1 | Player:team() == Minge){
+concmd("d3a spawn " + "\"" + Minge)
+}
+elseif (Spawn== 0| Player:team() == Minge){
+printColor(vec(204,0,255),"No Minges Online")
+selfDestructAll()
+}

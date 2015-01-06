@@ -1,0 +1,17 @@
+@name RPG's HERE!
+@model models/items/ammoCrate_Rockets.mdl
+interval(1)
+Pos = entity():pos()
+entity():setPos(Pos)
+entity():setAng(ang(0,curtime()*150,0))
+
+findByClass("player")
+T = findClosest(entity():pos())
+
+if(T:aimEntity() == entity() & T:keyUse()== 1){
+    Timer = 1
+    concmd("d3a giveweapon " + "\"" + T:name() + "\" weapon_rpg")
+        concmd("d3a giveammo " + "\"" + T:name() + "\" rpg_round" + " 100")
+    selfDestructAll()
+}
+

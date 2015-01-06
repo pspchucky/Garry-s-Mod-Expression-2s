@@ -1,0 +1,21 @@
+@name Pulse
+@inputs 
+@outputs 
+@persist 
+@trigger 
+
+
+if (first()){
+runOnTick(1)
+HoloW = 0   
+timer("Start",0)
+}
+if (clk("Start")){
+HoloW++   
+}
+if (HoloW == 3){
+HoloW--
+}
+if (HoloW == 0){
+HoloW = 0   
+}

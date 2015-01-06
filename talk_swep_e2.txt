@@ -1,0 +1,132 @@
+@name Talk Swep E2
+@persist T:table [L CurArray]:array Nr
+@trigger 
+if (first()|duped()) {
+    #SET UP SOUNDS
+    L = array()
+    
+    #Hello 
+    L:pushString("Hello")
+    R = array()
+    R:pushString("vo/npc/male01/hi01.wav")
+    R:pushString("vo/npc/male01/hi02.wav")
+    R:pushString("vo/npc/male02/hi02.wav")
+    T["Hello",string] = glonEncode(R)
+    
+    #Get Lost
+    L:pushString("Get Lost")
+    R = array()
+    R:pushString("vo/npc/male01/vquestion01.wav")
+    R:pushString("vo/npc/male01/watchwhat.wav")
+    R:pushString("vo/npc/male01/answer09.wav")
+    R:pushString("vo/npc/male01/answer30.wav")
+    R:pushString("vo/npc/male01/busy02.wav")
+    T["Get Lost",string] = glonEncode(R)
+
+    #Sorry
+    L:pushString("Sorry")
+    R = array()
+    R:pushString("vo/npc/male01/whoops01.wav")
+    R:pushString("vo/npc/male01/sorry01.wav")
+    R:pushString("vo/npc/male01/sorry02.wav")
+    R:pushString("vo/npc/male01/sorry03.wav")
+    R:pushString("vo/npc/male01/pardonme01.wav")
+    R:pushString("vo/npc/male01/pardonme02.wav")
+    R:pushString("vo/npc/male01/excuseme01.wav")
+    R:pushString("vo/npc/male01/excuseme01.wav")
+    T["Sorry",string] = glonEncode(R)
+    
+    #Yes
+    L:pushString("Yes")
+    R = array()
+    R:pushString("vo/npc/male01/answer02.wav")
+    R:pushString("vo/npc/male01/answer03.wav")
+    R:pushString("vo/npc/male01/answer08.wav")
+    R:pushString("vo/npc/male01/answer13.wav")
+    R:pushString("vo/npc/male01/answer15.wav")
+    R:pushString("vo/npc/male01/answer32.wav")
+    T["Yes",string] = glonEncode(R)
+    
+    #No
+    L:pushString("No")
+    R = array()
+    R:pushString("vo/npc/male01/answer17.wav")
+    R:pushString("vo/npc/male01/answer10.wav")
+    R:pushString("vo/npc/male01/answer21.wav")
+    R:pushString("vo/npc/male01/answer26.wav")
+    R:pushString("vo/npc/male01/answer27.wav")
+    R:pushString("vo/npc/male01/answer28.wav")
+    R:pushString("vo/npc/male01/question14.wav")
+    R:pushString("vo/npc/male01/vanswer01.wav")
+    R:pushString("vo/npc/male01/vanswer09.wav")
+    T["No",string] = glonEncode(R)
+    
+    #Bullshit
+    L:pushString("Bullshit")
+    R = array()
+    R:pushString("vo/npc/male01/question26.wav")
+    T["Bullshit",string] = glonEncode(R)
+    
+    #Thoughts
+    L:pushString("Thoughts")
+    R = array()
+    R:pushString("vo/npc/male01/answer16.wav")
+    R:pushString("vo/npc/male01/question02.wav")
+    R:pushString("vo/npc/male01/question03.wav")
+    R:pushString("vo/npc/male01/question06.wav")
+    R:pushString("vo/npc/male01/question09.wav")
+    R:pushString("vo/npc/male01/question13.wav")
+    R:pushString("vo/npc/male01/question16.wav")
+    R:pushString("vo/npc/male01/question19.wav")
+    R:pushString("vo/npc/male01/question22.wav")
+    R:pushString("vo/npc/male01/question23.wav")
+    R:pushString("vo/npc/male01/question27.wav")
+    R:pushString("vo/npc/male01/question28.wav")
+    T["Thoughts",string] = glonEncode(R)
+    
+    #Dont Know
+    L:pushString("Dont Know")
+    R = array()
+    R:pushString("vo/npc/male01/answer22.wav")
+    R:pushString("vo/npc/male01/answer23.wav")
+    R:pushString("vo/npc/male01/answer29.wav")
+    R:pushString("vo/npc/male01/answer35.wav")
+    R:pushString("vo/npc/male01/answer37.wav")
+    T["Dont Know",string] = glonEncode(R)
+    
+    #Look Out
+    L:pushString("Look Out")
+    R = array()
+    R:pushString("vo/npc/male01/behindyou01.wav")
+    R:pushString("vo/npc/male01/behindyou02.wav")
+    T["Look Out",string] = glonEncode(R)
+    
+    #Follow Me
+    L:pushString("Follow Me")
+    R = array()
+    R:pushString("vo/npc/male01/squad_away02.wav")
+    R:pushString("vo/npc/male01/squad_away03.wav")
+    T["Follow Me",string] = glonEncode(R)
+    
+    #Starting Variables
+    runOnTick(1), Nr = 1
+    CurArray = glonDecode(T[L[Nr,string],string])
+    hint("Current List: " + L[Nr,string],5)
+    hint("Nr of sounds in list: " + CurArray:count(),3)
+}
+
+M2 = owner():keyAttack1()
+Use = owner():keyUse()
+if (changed(Use) & Use) {
+    soundPurge()
+    Rnd = randint(CurArray:count())
+    CurSound = CurArray[Rnd,string]
+    owner():soundPlay(1,0,CurSound)
+}
+if (changed(M2) & M2) {
+    Nr++
+    if (Nr>L:count()) {Nr = 1}
+    CurArray = glonDecode(T[L[Nr,string],string])
+    hint("Current List: " + L[Nr,string],5)
+    hint("Nr of sounds in list: " + CurArray:count(),3)
+}

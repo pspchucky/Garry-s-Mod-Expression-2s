@@ -1,0 +1,21 @@
+@name Press E for a Pump Shotgun
+@persist Number
+@model 
+interval(1)
+Pos = entity():pos()
+entity():setPos(Pos)
+entity():setAlpha(0)
+#entity():setAng(ang(0,curtime()*150,0))
+Number+=1
+holoCreate(1)
+holoModel(1,"models/weapons/w_shot_m3super90.mdl")
+holoAng(1,ang(10*sin(Number),10*cos(Number),10*tan(Number)))
+findByClass("player")
+T = findClosest(entity():pos())
+
+if(T:aimEntity() == entity() & T:keyUse()== 1){
+    Timer = 1
+    concmd("d3a giveweapon " + "\"" + T:name() + "\" weapon_pumpshotgun")
+        #concmd("d3a giveammo " + "\"" + T:name() + "\" rpg_round" + " 100")
+}
+

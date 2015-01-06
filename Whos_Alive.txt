@@ -1,0 +1,17 @@
+@name Whos Alive
+@inputs 
+@outputs 
+@persist [Players DeadPlayers AlivePlayers]:array
+@trigger 
+interval(1)
+Players = players()
+DeadPlayers = array()
+AlivePlayers = array()
+
+for(I=1,Players:count()){
+if(Players[I,entity]:health() > 0){
+AlivePlayers:pushEntity(Players[I,entity])   
+}else{
+DeadPlayers:pushEntity(Players[I,entity])
+}
+}

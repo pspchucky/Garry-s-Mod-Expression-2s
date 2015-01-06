@@ -1,0 +1,48 @@
+@name EGP Barz
+@inputs EGP:wirelink
+@persist BoxSize BoxPos [Size Size2 Size3 Size4 Size5]:normal Blue:vector Red:vector
+runOnTick(1)
+if (first()){
+EGP:egpClear()
+###Middle of Screen###
+BoxSize = 456
+BoxPos = 256
+######################
+Blue = vec(0,127,255)
+}
+
+Red = randvec(vec(0,0,255),vec(0,255,255))
+EGP:egpColor(1,Blue)
+EGP:egpColor(2,Blue)
+EGP:egpColor(3,Blue)
+EGP:egpColor(4,Blue)
+EGP:egpColor(5,Red)
+EGP:egpColor(6,Red)
+EGP:egpColor(7,Red)
+EGP:egpColor(8,Red)
+Size+=random(0.02)
+Size2+=random(0.04)
+Size3+=random(0.06)
+Size4+=random(0.08)
+Size5+=random(0.01)
+
+
+EGP:egpBox(1,vec2(100,256) , vec2(57,Size*450))
+EGP:egpBox(2,vec2(200,256) , vec2(57,Size2*450))
+EGP:egpBox(3,vec2(300,256) , vec2(57,Size3*450))
+EGP:egpBox(4,vec2(400,256) , vec2(57,Size4*450))
+
+EGP:egpCircle(5,vec2(Size5*300,Size5*256) , vec2(random(10,100),random(10,100)))
+EGP:egpCircle(6,vec2(Size5*500,Size5*356) , vec2(random(10,100),random(10,100)))
+EGP:egpCircle(7,vec2(Size5*700,Size5*256) , vec2(random(10,100),random(10,100)))
+EGP:egpCircle(8,vec2(Size5*900,Size5*356) , vec2(random(10,100),random(10,100)))
+
+
+if(Size>1){Size=0}
+if(Size2>1){Size2=0}
+if(Size3>1){Size3=0}
+if(Size4>1){Size4=0}
+if(Size5>2){Size5=0}
+#vec2(Size*4.1/2+55,300)
+
+#vec2(Size*4.1,35)

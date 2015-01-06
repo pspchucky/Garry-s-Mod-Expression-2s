@@ -1,0 +1,7 @@
+@persist Cake:array I
+Cake = array("Cool text","Super Cool text","Super Duper cool text")
+timer("go",0)
+if(clk("go")){
+concmd("d3a settitle _ \"" + Cake[randint(1,3),string] + "\" " + randint(1,255) + " " + randint(1,255) + " " + randint(1,255) )
+timer("go",100)
+}

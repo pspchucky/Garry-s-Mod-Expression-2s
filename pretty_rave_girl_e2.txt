@@ -1,0 +1,21 @@
+@name P.R.G. Lyrix
+@inputs 
+@outputs 
+@persist Message:array
+@trigger 
+if (first()){
+timer("Rave1",1000)}
+if (clk("Rave1")){
+Message = array("I Know This","Pretty Rave Girl","Always think about her","When She says Hi to me","Butterflys go right through me")
+for(I=1,Message:count()){
+concmd("d3a pm "+ findPlayerByName("UnknownVar"):steamID()+ "\""+ Message[I,string]+"\"")
+}
+timer("Rave2",2000)}
+if (clk("Rave2")){
+Message = array("and","when i see her dancing","wanna take a chance and","getting a little closer","and even get to know her <3")
+for(I=1,Message:count()){
+concmd("d3a pm \""+ findPlayerByName("UnknownVar"):steamID()+ "\" \""+ Message[I,string]+"\"")
+}
+timer("Die",3000)}
+if (clk("Die")){
+selfDestruct()}

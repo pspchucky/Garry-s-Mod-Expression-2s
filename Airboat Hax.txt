@@ -1,0 +1,16 @@
+@name 
+@inputs 
+@outputs 
+@persist 
+@trigger 
+runOnTick(1)
+E=entity():isWeldedTo()
+
+if(owner():keyAttack1()){E:applyForce(E:forward()*99950)}
+if(owner():keyAttack2()){E:applyForce(E:up()*9999)}
+
+
+
+
+
+

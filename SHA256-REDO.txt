@@ -1,0 +1,177 @@
+@persist I K:array
+K = array(	"1116352408","1899447441","3049323471","3921009573","961987163","1508970993","2453635748","2870763221",
+			"3624381080","310598401","607225278","1426881987","1925078388","2162078206","2614888103","3248222580",
+			"3835390401","4022224774","264347078","604807628","770255983","1249150122","1555081692","1996064986",
+			"2554220882","2821834349","2952996808","3210313671","3336571891","3584528711","113926993","338241895",
+			"666307205","773529912","1294757372","1396182291","1695183700","1986661051","2177026350","2456956037",
+			"2730485921","2820302411","3259730800","3345764771","3516065817","3600352804","4094571909","275423344",
+			"430227734","506948616","659060556","883997877","958139571","1322822218","1537002063","1747873779",
+			"1955562222","2024104815","2227730452","2361852424","2428436474","2756734187","3204031479","3329325298")
+
+	for(I=0,I<K:count()) {
+		K[I,string] = K[I,number]
+	}
+
+
+#[
+	for($i=0;$i<count($K);$i++) {
+		$K[$i] = new BigInt($K[$i]);
+	}
+
+	function sha256($str) {
+		global $K;
+
+		$M = pad_message($str);
+
+		// Initial hash values
+		$iA = new BigInt("1779033703");
+		$iB = new BigInt("3144134277");
+		$iC = new BigInt("1013904242");
+		$iD = new BigInt("2773480762");
+		$iE = new BigInt("1359893119");
+		$iF = new BigInt("2600822924");
+		$iG = new BigInt("528734635");
+		$iH = new BigInt("1541459225");
+
+		$N = count($M);
+
+		// Needed only once, it will be completely overwritten by each pass
+		$Wnew = array();
+
+		for($i = 0; $i < $N; $i++) {
+			$iOldA = $iA;
+			$iOldB = $iB;
+			$iOldC = $iC;
+			$iOldD = $iD;
+			$iOldE = $iE;
+			$iOldF = $iF;
+			$iOldG = $iG;
+			$iOldH = $iH;
+
+			$W = convert_512_block_to_words($M[$i]);
+
+			for($t = 0; $t < 64; $t++) {
+				if($t < 16) {
+					$Wnew[$t] = $W[$t];
+				} else {
+					$Wnew[$t] = sigma1_256($Wnew[$t-2])->Add($Wnew[$t-7])->Add(sigma0_256($Wnew[$t-15]))->Add($Wnew[$t-16]);
+				}
+
+				$T1 = $iH->Add(bigSigma1_256($iE))->Add(ch($iE,$iF,$iG))->Add($K[$t])->Add($Wnew[$t]);
+				$T2 = bigSigma0_256($iA)->Add(Maj($iA,$iB,$iC));
+
+				$iH = $iG;
+				$iG = $iF;
+				$iF = $iE;
+				$iE = $iD->Add($T1);
+				$iD = $iC;
+				$iC = $iB;
+				$iB = $iA;
+				$iA = $T1->Add($T2);
+			}
+
+			$iA = $iOldA->Add($iA);
+			$iB = $iOldB->Add($iB);
+			$iC = $iOldC->Add($iC);
+			$iD = $iOldD->Add($iD);
+			$iE = $iOldE->Add($iE);
+			$iF = $iOldF->Add($iF);
+			$iG = $iOldG->Add($iG);
+			$iH = $iOldH->Add($iH);
+		}
+		
+		return $iA->ToHex()." ".$iB->ToHex()." ".$iC->ToHex()." ".$iD->ToHex()." ".$iE->ToHex()." ".$iF->ToHex()." ".$iG->ToHex()." ".$iH->ToHex();
+	}
+
+	function pad_message($str) {
+		$strlen = strlen($str);
+
+		// NOTE: 8 is the size in bits of a byte (single char string)
+		$l = $strlen * 8;
+
+		$bitstr = "";
+
+		for($i = 0; $i < $strlen; $i++) {
+			$tmp = substr($str,$i,1);
+			$tmp = decbin(ord($tmp));
+			$tmp = str_pad($tmp,8,0,STR_PAD_LEFT);
+			$bitstr .= $tmp;
+		}
+
+		// Append 1 bit
+		$bitstr .= "1";
+
+		$padlen = 512 - (($l + 1 + 64) % 512);
+		$padding = str_pad($padding,$padlen,0);
+		$bitstr .= $padding;
+		
+		// Calculate 64 bit length
+		$tmp = new BigInt($l);
+		$bitstr .= str_pad($tmp->ToString(),64,"0",STR_PAD_LEFT);
+
+		$blocks = strlen($bitstr) / 512;
+
+		$ret = Array();
+		for($i = 0; $i < $blocks; $i++) {
+			$ret[$i] = substr($bitstr,$i*512,512);
+		}
+
+		return $ret;
+	}
+
+	function convert_512_block_to_words($block) {
+		$ret = array();
+
+		for($i = 0; $i < 16; $i++) {
+			$tmp = substr($block,$i*32,32);
+			$ret[$i] = BigInt::FromBitString($tmp,32);
+		}
+
+		return $ret;
+	}
+
+	function ch($x, $y, $z) {
+		$t1 = $y->LogicalXOR($z);
+		$t2 = $x->LogicalAND($t1);
+		$t3 = $z->LogicalXOR($t2);
+
+		return $t3;
+	}
+
+	function maj($x, $y, $z) {
+		return $x->LogicalAND($y)->LogicalOR($z->LogicalAND($x->LogicalOR($y)));
+	}
+
+	function bigSigma0_256($x) {
+		$t1 = $x->RightRotate(2);
+		$t2 = $x->RightRotate(13);
+		$t3 = $x->RightRotate(22);
+
+		return $t1->LogicalXOR($t2)->LogicalXOR($t3);
+	}
+
+	function bigSigma1_256($x) {
+		$t1 = $x->RightRotate(6);
+		$t2 = $x->RightRotate(11);
+		$t3 = $x->RightRotate(25);
+
+		return $t1->LogicalXOR($t2)->LogicalXOR($t3);
+	}
+
+	function sigma0_256($x){
+		$t1 = $x->RightRotate(7);
+		$t2 = $x->RightRotate(18);
+		$t3 = $x->LogicalRightShift(3);
+		
+		return $t1->LogicalXOR($t2)->LogicalXOR($t3);
+	}
+	
+	function sigma1_256($x){
+		$t1 = $x->RightRotate(17);
+		$t2 = $x->RightRotate(19);
+		$t3 = $x->LogicalRightShift(10);
+		
+		return $t1->LogicalXOR($t2)->LogicalXOR($t3);
+	}
+?>
+]#

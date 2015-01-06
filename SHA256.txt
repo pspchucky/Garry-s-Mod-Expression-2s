@@ -1,0 +1,136 @@
+@persist I K:table H:table A B C D E F G T J
+
+function string toHexStr(N)
+{
+S = ""
+for(I=7,I>=0,-1){
+V = (N>>(I*4)) & "0xf"
+S+=V:toString(16)
+}
+return S   
+}
+
+
+function number rotr(N,X)
+{
+    return (X >> N) | (X << (32-N))   
+}
+
+function number sigma0(X)
+{
+    return rotr(2, X)^rotr(13, X)^rotr(22, X)  
+}
+
+function number sigma1(X)
+{
+    return rotr(6,  X)^rotr(11, X)^rotr(25, X)
+}
+
+function normal ssigma0(X)
+{
+    return rotr(7,  X)^rotr(18, X)^(X>>3)
+}
+
+function normal ssigma1(X)
+{
+    return rotr(17, X)^rotr(19, X)^(X>>10)
+}
+
+function normal ch(X,Y,Z)
+{
+    return (X & Y) ^ (~X & Z)
+}
+
+function normal maj(X,Y,Z)
+{
+    return (X & Y)^( X & Z )^( Y & Z )
+}
+
+function string sha256(Msg:string){
+    #Convert string to UTF-8, as SHA only deals with byte-streams
+    K = table("0x428a2f98", "0x71374491", "0xb5c0fbcf", "0xe9b5dba5",
+   "0x3956c25b", "0x59f111f1", "0x923f82a4", "0xab1c5ed5",
+   "0xd807aa98", "0x12835b01", "0x243185be", "0x550c7dc3",
+   "0x72be5d74", "0x80deb1fe", "0x9bdc06a7", "0xc19bf174",
+   "0xe49b69c1", "0xefbe4786", "0x0fc19dc6", "0x240ca1cc",
+   "0x2de92c6f", "0x4a7484aa", "0x5cb0a9dc", "0x76f988da",
+   "0x983e5152", "0xa831c66d", "0xb00327c8", "0xbf597fc7",
+   "0xc6e00bf3", "0xd5a79147", "0x06ca6351", "0x14292967",
+   "0x27b70a85", "0x2e1b2138", "0x4d2c6dfc", "0x53380d13",
+   "0x650a7354", "0x766a0abb", "0x81c2c92e", "0x92722c85",
+   "0xa2bfe8a1", "0xa81a664b", "0xc24b8b70", "0xc76c51a3",
+   "0xd192e819", "0xd6990624", "0xf40e3585", "0x106aa070",
+   "0x19a4c116", "0x1e376c08", "0x2748774c", "0x34b0bcb5",
+   "0x391c0cb3", "0x4ed8aa4a", "0x5b9cca4f", "0x682e6ff3",
+   "0x748f82ee", "0x78a5636f", "0x84c87814", "0x8cc70208",
+   "0x90befffa", "0xa4506ceb", "0xbef9a3f7", "0xc67178f2")
+    #Initial hash value [5.3.1]
+    H = table("0x6a09e667", "0xbb67ae85", "0x3c6ef372", "0xa54ff53a", "0x510e527f", "0x9b05688c", "0x1f83d9ab", "0x5be0cd19")
+    #PREPROCESSING 
+    Msg += toChar(0x80) #I DONT KNOW IF THIS IS RIGHT CORRECT IT #Msg += String.fromCharCode(0x80);  # add trailing '1' bit (+ 0's padding) to string
+    L = Msg:length()/4+2 #Convert string msg into 512-bit/16-integer blocks arrays of ints
+    N = ceil(L/16)
+    M = array(N)
+
+    for (I=0,I<N) {
+        #M[I] = array(16) ########################################################How can I translate this?
+        for (J=0,J<16) { # // encode 4 chars per integer, big-endian encoding
+
+            #M[I][J] == (Msg:toChar(i*64+j*4)<<24) | (Msg:toChar(i*64+j*4+1)<<16) | 
+            #          (Msg:toChar(i*64+j*4+2)<<8) | (Msg:toChar(i*64+j*4+3))
+        } #// note running off the end of msg is ok 'cos bitwise ops on NaN return 0
+    }
+    #// add length (in bits) into final pair of 32-bit integers (big-endian) [5.1.1]
+    #// note: most significant word would be (len-1)*8 >>> 32, but since JS converts
+    #// bitwise-op args to 32 bits, we need to simulate this by arithmetic operators
+    M[N-1][14] == ((Msg:length()-1)*8) / (2^32)
+    M[N-1][14] == floor(M[N-1][14])
+    M[N-1][15] == ((Msg:length()-1)*8) & "0xffffffff"
+    
+#Hash Computation
+W = array(64) #Not right :/  var W = new Array(64);  
+    for (I=0,I<N) {
+        #// 1 - prepare message schedule 'W'
+        for (T=0,T<16){ W[T] = M[I][T]}
+        for (T=16,T<64){ W[T] = (ssigma1(W[T-2]) + W[T-7] + ssigma0(W[T-15]) + W[T-16]) & "0xffffffff"}
+
+        #// 2 - initialise working variables a, b, c, d, e, f, g, h with previous hash value
+          A = H[0,number]
+          B = H[1,number]
+          C = H[2,number]
+          D = H[3,number]
+          E = H[4,number]
+          F = H[5,number]
+          G = H[6,number]
+          H = H[7,number]
+
+       # // 3 - main loop (note 'addition modulo 2^32')
+        for (T=0,T<64) {
+            T1 = H + sigma1(E) + ch(E, F, G) + K[T] + W[T]
+            T2 = sigma0(A) + maj(A, B, C)
+            H = G
+            G = F
+            F = E
+            E = (D + T1) & "0xffffffff"
+            D = C
+            C = B
+            B = A
+            A = (T1 + T2) & "0xffffffff"
+        }
+       # // 4 - compute the new intermediate hash value (note 'addition modulo 2^32')
+        H[0,normal] = (H[0,string]+A) & "0xffffffff"
+        H[1,normal] = (H[1,string]+B) & "0xffffffff" 
+        H[2,normal] = (H[2,string]+C) & "0xffffffff" 
+        H[3,normal] = (H[3,string]+D) & "0xffffffff" 
+        H[4,normal] = (H[4,string]+E) & "0xffffffff"
+        H[5,normal] = (H[5,string]+F) & "0xffffffff"
+        H[6,normal] = (H[6,string]+G) & "0xffffffff" 
+        H[7,normal] = (H[7,string]+H) & "0xffffffff" 
+
+    }
+
+    return toHexStr(H[0,normal]) + toHexStr(H[1,normal]) + toHexStr(H[2,normal]) + toHexStr(H[3,normal]) + 
+           toHexStr(H[4,normal]) + toHexStr(H[5,normal]) + toHexStr(H[6,normal]) + toHexStr(H[7,normal])
+
+
+}

@@ -1,0 +1,17 @@
+@name Minge Killer
+@inputs
+@outputs
+@persist E:entity Ar:array F:vector Ents:entity Counter T
+@model models/hunter/plates/plate.mdl
+interval(10)
+if (duped()) {reset()}
+if (first()) {E:setMass(50000)}
+findByModel("models/player/soldier_stripped.mdl")
+T++
+if (T > 100) {T=0,Counter++}
+if (Counter > findToArray():count()) {Counter = 1}
+
+E = entity()
+Ents = findToArray():entity(Counter)
+F = Ents:pos() + vec(0,0,0) - E:pos()
+E:applyForce((F + $F * 5) * 1000)

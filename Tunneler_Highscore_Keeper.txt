@@ -1,0 +1,15 @@
+@name Tunneler Highscore Keeper
+@inputs 
+@outputs 
+@persist Scores:array
+@trigger 
+gSetGroup("Train_speed_highscorez")
+for(I=1,50){
+if(gGetStr(I) != ""){
+Scores:pushString(gGetStr(I))
+print(I)
+}
+}
+for(J=1,Scores:count()){
+print(Scores[J,string])
+}

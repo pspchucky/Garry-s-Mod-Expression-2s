@@ -1,0 +1,14 @@
+@name functions
+
+function string hex2string(Str:array){
+String = array()
+Strz = Str
+    for(I=1,Strz:count()){
+        if(Strz[I,string] == Strz[I,string]:upper()){
+            String:pushString(format("%02X",toByte(Strz[I,string])))
+            }elseif(Strz[I,string] == Strz[I,string]:lower()){
+                String:pushString(format("%02x",toByte(Strz[I,string])))
+        }
+    }
+                    return String:concat()
+}

@@ -1,0 +1,16 @@
+@name Sender 
+interval(1000)
+gShare(1)
+gSetGroup("Hi")
+if(first()){
+Fade = 255
+}
+function decrease(){
+Fade-=0.002
+gSetNum("Mega",Fade)
+if(Fade == 0){
+Fade = 0   
+}
+
+}
+decrease()

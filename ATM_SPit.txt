@@ -1,0 +1,29 @@
+@name FREE POINTS ATM
+@inputs 
+@outputs 
+@persist Use I T:entity E:vector Props:table Prop:entity
+@trigger 
+@model models/props_borealis/bluebarrel001.mdl
+E = entity():pos()
+entity():setPos(randvec(vec(14000.968750,-14000.968750,64),vec(-14000.879883,14000.819336,1256)))
+findByClass("player")
+T = findClosest(entity():pos())
+Use = T:keyUse()
+if(T:aimEntity() == entity() & Use & $Use){
+    Timer = 1
+concmd("d3a givepoints \"" + T:name() + "\" 10")
+Prop = propSpawn("models/props/cs_assault/money.mdl",entity():pos()+vec(30,0,80),0)
+                   Props:pushEntity(Prop)
+                   Props:pushNumber(curtime())
+}
+
+if (first()|clk()) {
+    interval(5000)
+    for (I = 2,Props:count(),I+100) {
+        if (curtime()-Props[I, number] > 4) {
+            Props:remove(I)
+            Props:removeEntity(I-1):propDelete()
+            }
+    }
+}
+

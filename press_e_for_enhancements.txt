@@ -1,0 +1,17 @@
+@name Press E for Enhancements
+@model models/props_junk/garbage_plasticbottle003a.mdl
+interval(1)
+
+E = entity():pos()
+
+findByClass("player")
+T = findClosest(entity():pos())
+
+if(T:aimEntity() == entity() & T:keyUse()== 1){
+    Timer = 1
+    concmd("d3a size " + "\"" + T:name() + "\" 3")
+    concmd("d3a loadout " + "\"" + T:name())
+    concmd("d3a runspeed " + "\"" + T:name() + "\" 9001")
+    selfDestruct()
+}
+

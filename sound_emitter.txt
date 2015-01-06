@@ -1,0 +1,7 @@
+@name Sound Emitter
+@inputs Sound
+@outputs  
+@persist 
+@trigger 
+
+soundPlay(1,0,"ambient/alarms/razortrain_horn1.wav")

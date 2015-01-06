@@ -1,0 +1,34 @@
+@name CS:S AWP Sniper Rifle [Beta]
+@persist Found Ent:entity On
+runOnTick(1)
+if(first()){On=1
+holoCreate(1)
+holoModel(1,"models/weapons/w_snip_awp.mdl")
+holoAng(1,owner():attachmentAng("anim_attachment_RH"))
+holoPos(1,owner():attachmentPos("anim_attachment_RH"))
+holoParentAttachment(1,owner(),"anim_attachment_RH")
+holoScale(1,vec(1,1,1))
+holoPos(1,holoEntity(1):toWorld(vec(1,-2,1.8)))
+holoAng(1,holoEntity(1):toWorld(ang(0,-10,0)))
+}
+On = owner():weapon():type()=="weapon_crossbow"
+if(On & $On){ timer("find",100) }
+
+if(On & clk("find") & findCanQuery()){
+    findIncludePlayerProps(owner())
+    Found=findByClass("crossbow_bolt")
+    timer("find",100)
+}
+
+if(Found & $Found){
+         timer("1",1000)
+    Ent=findResult(1)
+    Ent:setTrails(10,50,5,"trails/smoke",vec(255,255,255),255)
+    Ent:applyForce(Ent:vel()*50000000000000000000000000000000000000000000000000000000)
+}
+if (clk("1")){
+owner():soundPlay(1000,1000,"weapons/awp/awp1.wav")}
+if(owner():weapon():type()=="weapon_crossbow"){
+        #[owner():weapon():setMaterial("models/effects/vol_light001")]# # null was causing errors
+    holoAlpha(1,255)
+}else{holoAlpha(1,0)}

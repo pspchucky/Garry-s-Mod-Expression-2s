@@ -1,0 +1,109 @@
+@name Red > Yellow > Green Beta
+@inputs 
+@outputs [LightUno LightDos LightTres]:vector TextScreen:string TestOnStartup:number
+@persist 
+interval(1)
+if (first()){
+runOnChat(1)
+LightUno = vec(0,0,0)
+LightDos = vec(0,0,0)
+LightTres= vec(0,0,0)
+TextScreen = "Booting up..."
+###Setting###
+TestOnStartup = 0
+#############
+}
+if (~TestOnStartup & TestOnStartup == 1){
+TextScreen = "We are testing lighting systems, be patient..."
+timer("Begin",1500)   
+}else{timer("Next3",1000)}
+
+if (clk("Begin")){
+entity():soundPlay(1,0,"/buttons/blip2.wav")
+printColor(vec(255,0,0),"Starting up...")
+LightUno = vec(255,10,10)
+LightDos = vec(0,0,0)
+LightTres= vec(0,0,0)
+TextScreen = "Red light ON! [Test]"
+timer("Next",1500)
+}
+
+if (clk("Next")){
+entity():soundPlay(2,0,"/buttons/blip2.wav")
+LightUno = vec(255,10,10)
+LightDos = vec(255,255,10)
+LightTres= vec(0,0,0)
+TextScreen = "Yellow light ON! [Test]"
+timer("Next2",1500)
+}
+
+if (clk("Next2")){
+entity():soundPlay(3,0,"/buttons/blip2.wav")
+LightUno = vec(255,10,10)
+LightDos = vec(255,255,10) 
+LightTres= vec(10,255,10)
+TextScreen = "Green light ON! [Test]"
+timer("Next3",1500)
+}
+
+if (clk("Next3")){
+entity():soundPlay(3,0,"/ambient/energy/powerdown2.wav")
+LightUno = vec(0,0,0)
+LightDos = vec(0,0,0)
+LightTres= vec(0,0,0)
+TextScreen = "E2 is awaiting " + owner():name() + " to start the event."
+printColor(vec(10,255,10),"Done ;) Use '-start' to start the lights.")
+printColor(vec(10,255,10),"Use '-test' to test the lights again.")
+}
+
+
+if(chatClk(owner())){
+    if (lastSpoke():lastSaid() == "-start"){
+hideChat(1)
+print(_HUD_PRINTCENTER,"Event begins in 3")
+TextScreen = "Okay Guys."
+timer("1",1500)
+}
+if (lastSpoke():lastSaid() == "-test"){
+hideChat(1)
+print(_HUD_PRINTCENTER,"Testing light systems...")
+TextScreen = "We are Testing Light Systems, be patient..."
+timer("Begin",2000)
+}
+}
+
+
+if (clk("1")){
+entity():soundPlay(4,0,"/buttons/blip1.wav")
+print(_HUD_PRINTCENTER,"Event begins in 2")
+TextScreen = "Get Ready!"
+LightUno = vec(255,10,10)
+LightDos = vec(0,0,0)
+LightTres= vec(0,0,0)
+timer("2",1500)
+}
+if(clk("2")){
+entity():soundPlay(5,0,"/buttons/blip1.wav")    
+print(_HUD_PRINTCENTER,"Event begins in 1")
+LightUno = vec(255,10,10)
+LightDos = vec(255,255,10)
+LightTres= vec(0,0,0)
+TextScreen = "Get Set!"
+timer("3",1500)
+}
+if(clk("3")){
+entity():soundPlay(6,0,"/achievements/achievement_earned.mp3")    
+print(_HUD_PRINTCENTER,"The Event has Begun!")
+LightUno = vec(255,10,10)
+LightDos = vec(255,255,10) 
+LightTres= vec(10,255,10)
+TextScreen = "Go GO GO!!!"
+timer("4",5000)
+}
+if(clk("4")){
+LightUno = vec(0,0,0)
+LightDos = vec(0,0,0)
+LightTres= vec(0,0,0)
+TextScreen = owner():name() + "'s Event is in progress..." 
+print(_HUD_PRINTCENTER,"E2 has reseted and is waiting for the next -start.")
+}

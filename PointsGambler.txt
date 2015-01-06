@@ -1,0 +1,68 @@
+@name DontSendPointsIt'sNotListening
+@inputs 
+@outputs 
+@persist [PointsRecieved Chat]:array Games Calculate Random Winner:string Amount I MaxBet
+@trigger 
+
+function void rng()
+{   
+local Rand = randint(1,10)
+Random = Rand
+if(Random >= 6){
+print("DOUBLE POINTS" + Random) 
+PointsRecieved:pushString("w")
+}elseif(Random <= 5){
+print("I keep points :3" + Random)
+PointsRecieved:pushString("l")
+}
+}
+runOnChat(1)
+if(chatClk()){
+Chat = lastSpoke():lastSaid():explode(" ")
+if(Chat[1,string] == "!givepoints" & findPlayerByName(Chat[2,string]):steamID() == owner():steamID() || Chat[2,string] == owner():steamID()){
+if(Chat[3,string]:toNumber() > 11){
+concmd("say Max bet is 10 for now.")
+print("d3a givepoints " +lastSpoke():steamID()+ " "+Chat[3,string])
+}else{
+printColor(vec(0,255,0),"[Gambler] Recieved "+Chat[3,string]:toNumber()+ " points from "+lastSpoke():name())
+PointsRecieved:pushString(lastSpoke():steamID())
+PointsRecieved:pushNumber(curtime())
+PointsRecieved:pushNumber(Chat[3,string]:toNumber())
+Games++
+timer(Games:toString(),0)
+}
+}
+}
+
+if(clk(Games:toString())){
+print("Processing Game "+Games+"...")
+rng()
+}
+
+
+
+
+if (first()|clk()) {
+    interval(100)
+        print(PointsRecieved)
+        I=2
+            if(PointsRecieved[I+2,string] == "w"){
+                Winner = PointsRecieved[I-1,string]
+                Amount = PointsRecieved[I+1,number]*2
+                concmd("say " + Winner + " won.")
+                concmd("d3a givepoints \"" + Winner + "\" \"" +Amount + "\"")
+            PointsRecieved:removeString(I)
+            PointsRecieved:removeString(I-1)
+            PointsRecieved:removeString(I+1)
+            PointsRecieved:removeString(I+2)
+            }elseif(PointsRecieved[I+2,string] == "l"){
+                Winner = PointsRecieved[I-1,string]
+                Amount = PointsRecieved[I+1,number]*0   
+                concmd("say " + Winner + " lost.")
+            PointsRecieved:removeString(I)
+            PointsRecieved:removeString(I-1)
+            PointsRecieved:removeString(I+1)
+            PointsRecieved:removeString(I+2)
+    }
+}
+

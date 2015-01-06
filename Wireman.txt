@@ -1,0 +1,14 @@
+runOnTick(1)
+Prop = entity()
+E = entity():isWeldedTo()
+rangerFilter(Prop)
+Rng = rangerOffset(300,E:pos(),-E:up())
+if(first()){
+holoCreate(1)   
+}
+if (Rng:hit()) 
+{
+      Diff = 40-Rng:distance()
+      Prop:applyForce((vec(0,0,Diff)*20-Prop:vel())*55)
+holoPos(1,Rng:pos())
+}

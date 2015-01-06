@@ -1,0 +1,21 @@
+@name 
+@inputs 
+@outputs 
+@persist Model:string Props:table
+@persist HoloCount
+Model = "models/hunter/blocks/cube025x025x025.mdl"
+if (HoloCount <= 500) { #Set 200 to how many you're spawning
+    runOnTick(1)
+    if ( propCanCreate() ) {
+        HoloCount++
+        Prop = propSpawn(Model,entity():pos() + vec(cos(HoloCount)*HoloCount,sin(HoloCount)*HoloCount,HoloCount*7),1)
+        Props:pushEntity(Prop)
+        Props:pushNumber(HoloCount)
+        if (HoloCount == 500) {
+            printColor(vec(10,200,255),"Holos Created.") #Do same as you did on line 2 here.
+for(I=0,Props:count()){
+Props:removeEntity(I-1):propDelete()
+}
+        }
+    }
+}

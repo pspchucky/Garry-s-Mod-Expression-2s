@@ -1,0 +1,7 @@
+@name Color E2!
+@persist Hue
+runOnTick(1)
+Hue++
+if(Hue>=360){Hue=0}
+holoCreate(1)
+holoColor(1,hsv2rgb(vec(Hue,1,1)))

@@ -1,0 +1,111 @@
+@name Propcore Monopoly
+@persist [S T]:string [SS PropSpawnDelay Z]:number [Tiles PropArray PropArrayTwo PropAngles PropColors Props]:array A:entity
+@persist [Holograms_Vec Holograms_Color Holograms_Ang Holograms]:array
+runOnChat(1)
+if(first()){
+    
+    entity():setAng(ang(0,0,0))
+    SS = 1
+    PropSpawnDelay = 255
+    BHeight = 25
+    S = "models/hunter/plates/plate16x16.mdl"
+    T = "models/hunter/plates/plate8x16.mdl"
+        for(I=1,4){
+            PropArray:pushString(S) #Square
+        }
+        
+        for(I=1,36){
+            PropArray:pushString(T) #9 Tiles
+        }
+    PropArrayTwo = array(entity():pos()+vec(0,0,BHeight),
+    entity():pos()+vec(4220,0,BHeight),
+    entity():pos()+vec(0,-4220,BHeight),
+    entity():pos()+vec(4220,-4220,BHeight))
+        for(I=1,9){
+        PropArrayTwo:pushVector(entity():pos()+vec(190+(I*384),0,BHeight))
+        }
+        for(I=1,9){
+        PropArrayTwo:pushVector(entity():pos()+vec(4220,-(190+(I*384)),BHeight))
+        }
+        for(I=1,9){
+        PropArrayTwo:pushVector(entity():pos()+vec(4030-(I*384),-4220,BHeight))
+        }
+        for(I=1,9){
+        PropArrayTwo:pushVector(entity():pos()+vec(0,-4220+(190+(I*384)),BHeight))
+        }
+        for(I=1,13){
+        PropAngles:pushAngle(ang(0,0,0))   
+        }
+        for(I=1,9){
+        PropAngles:pushAngle(ang(0,90,0))   
+        }
+        for(I=1,9){
+        PropAngles:pushAngle(ang(0,0,0))   
+        }
+        for(I=1,9){
+        PropAngles:pushAngle(ang(0,90,0))   
+        }
+        for(I=1,PropArray:count()){
+        PropColors:pushVector(vec(205,230,208))
+        }
+    print("Spawning the props")
+    timer("DoProps",0)
+}
+
+if(clk("DoProps")){
+    if (propCanCreate()){
+        if(SS <= PropArray:count()){
+            A = propSpawn(PropArray[SS,string],PropArrayTwo[SS,vector],PropAngles[SS,angle],1)
+            A:setColor(PropColors[SS,vector])
+            A:setMaterial("models/debug/debugwhite")
+            Props:pushEntity(A)
+            SS++
+            timer("DoProps",0)   
+        }elseif(SS >= PropArray:count()+1){
+            stoptimer("DoProps")
+                Holograms_Color = array(vec(149,84,54),vec(149,84,54), #2 Brown
+                vec(170,224,250),vec(170,224,250),vec(170,224,250), #3 Teal
+                vec(217,58,150),vec(217,58,150),vec(217,58,150), #3 Pink-purple
+                vec(247,148,29),vec(247,148,29),vec(247,148,29), #3 Orange
+                vec(237,27,36),vec(237,27,36),vec(237,27,36),  #3 Red
+                vec(254,242,0),vec(254,242,0),vec(254,242,0), #3 Yellow
+                vec(31,178,90),vec(31,178,90),vec(31,178,90), #3 Green
+                vec(0,114,187),vec(0,114,187)) #2 Blue
+                Holograms_Ang = array(ang(0,90,0),ang(0,90,0),ang(0,90,0),ang(0,90,0),ang(0,90,0), #Row 1
+                ang(0,180,0),ang(0,180,0),ang(0,180,0),ang(0,180,0),ang(0,180,0),ang(0,180,0), #Row 2
+                ang(0,90,0),ang(0,90,0),ang(0,90,0),ang(0,90,0),ang(0,90,0),ang(0,90,0), #Row 3
+                ang(0,180,0),ang(0,180,0),ang(0,180,0),ang(0,180,0),ang(0,180,0)) #Row 4
+                Z = BHeight+30
+                Holograms_Vec = array(vec(575,-261,Z),vec(1342,-261,Z),vec(2492.5,-261,Z),vec(3259.5,-261,Z),vec(3643,-261,Z), #Row 1
+                vec(3959,-575,Z),vec(3959,-1342,Z),vec(3959,-1725.5,Z),vec(3959,-2492.5,Z),vec(3959,-3259.5,Z),vec(3959,-3643,Z), #Row 2
+                vec(3641,-3959,Z),vec(3259.5,-3959,Z),vec(2492.5,-3959,Z),vec(2492.5-767,-3959,Z),vec(1342,-3959,Z),vec(575,-3959,Z), #Row 3
+                vec(260,-3643,Z),vec(260,-2492.5,Z),vec(260,-1725.5-(383.5*3),Z),vec(260,-1342,Z),vec(260,-575,Z))
+            timer("DoHolos",100)
+        } 
+    } else {
+        timer("DoProps",PropSpawnDelay)   
+    }
+}
+if(clk("DoHolos")){
+    holoCreate(100,entity():pos()+vec(90,90,BHeight+15),vec(20,20,20),ang(0,45,90),vec(0,0,0),"models/sprops/misc/alphanum/alphanum_g.mdl")
+    holoCreate(101,entity():pos()+vec(-90,-90,BHeight+15),vec(20,20,20),ang(0,45,90),vec(0,0,0),"models/sprops/misc/alphanum/alphanum_o.mdl")
+    holoCreate(102,entity():pos()+vec(-38*2,125*2,BHeight+25),vec(8,8,8),ang(0,45,90),vec(0,0,0),"models/sprops/misc/alphanum/alphanum_dlsign.mdl")
+    holoCreate(103,entity():pos()+vec(-70*2,200,BHeight+25),vec(8,8,8),ang(0,45,90),vec(0,0,0),"models/sprops/misc/alphanum/alphanum_2.mdl")
+    holoCreate(104,entity():pos()+vec(-95*2,75*2,BHeight+25),vec(8,8,8),ang(0,45,90),vec(0,0,0),"models/sprops/misc/alphanum/alphanum_0.mdl")
+    holoCreate(105,entity():pos()+vec(-240,100,BHeight+25),vec(8,8,8),ang(0,45,90),vec(0,0,0),"models/sprops/misc/alphanum/alphanum_0.mdl")
+        for(I=1,22){ #22 Colored Properties
+        holoCreate(I,entity():pos()+Holograms_Vec[I,vector],vec(2.5,1,3),Holograms_Ang[I,angle],Holograms_Color[I,vector],"models/hunter/plates/plate2x8.mdl")
+        holoMaterial(I,"models/debug/debugwhite")
+        }
+}
+
+if(chatClk(owner())){
+    Chat = owner():lastSaid():explode(" ")
+    if(Chat[1,string] == "r"){
+        hideChat(1)
+            for(I=1,PropArray:count()){
+            Props[I,entity]:propDelete()
+            }   
+    entity():propDelete()
+    }
+}

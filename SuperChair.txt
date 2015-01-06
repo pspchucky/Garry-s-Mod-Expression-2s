@@ -1,0 +1,43 @@
+@name SuperChair
+@inputs Pod:wirelink
+@outputs 
+@persist E:entity [W A S D Shift Space]:number EIS:entity
+@trigger 
+
+runOnTick(1)
+if(first()){
+entity():isWeldedTo():setAng(ang(0,0,0))   
+}
+E=entity()
+W=Pod["W",number]
+S=Pod["S",number]
+Shift=Pod["Shift",number]
+R=Pod["R",number]
+A=Pod["A",number]
+Space=Pod["Space",number]
+D=Pod["D",number]
+EIS=entity():isWeldedTo()
+
+if(W){
+EIS:setPos(EIS:pos()+vec(0,25,0))    
+}
+if(S){
+EIS:setPos(EIS:pos()+vec(0,-25,0))    
+}
+if(D){
+EIS:setPos(EIS:pos()+vec(25,0,0)) 
+}
+if(A){
+EIS:setPos(EIS:pos()+vec(-25,0,0)) 
+}
+if(Shift){
+EIS:setPos(EIS:pos()+vec(0,50,0)) 
+}
+if(R){
+EIS:setPos(EIS:pos()+vec(0,0,-25)) 
+}
+if(Space){
+EIS:setPos(EIS:pos()+vec(0,0,25)) 
+}
+
+

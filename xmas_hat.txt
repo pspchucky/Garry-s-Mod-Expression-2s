@@ -1,0 +1,18 @@
+@name 1 and 0
+@inputs 
+@outputs I
+@persist 
+@trigger 
+
+if (first()){
+I = 0
+timer("1",0)
+}
+if (clk("1")){
+I = 1   
+timer("2",0)   
+}
+if(clk("2")){
+I = 0
+timer("1",0)
+}

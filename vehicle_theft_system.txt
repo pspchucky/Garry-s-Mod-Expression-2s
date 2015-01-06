@@ -1,0 +1,5 @@
+@name vehicle theft system
+@inputs E:entity
+E=entity():isWeldedTo()
+interval(10)
+if(E:driver()){if(E:driver()!=owner()){hint(""+E:driver():name(),30) E:killPod()}}

@@ -1,0 +1,13 @@
+@name Super Combine Blue Eye
+
+
+holoCreate(1)
+holoModel(1,"models/dav0r/hoverball.mdl")
+holoColor(1,vec(0,220,255))
+holoMaterial(1,"models/shiny")
+holoPos(1, owner():attachmentPos("eyes")-vec(0,0,0))
+holoParentAttachment(1,owner(),"anim_attachment_HEAD")
+holoScale(1,vec(0.3,0.3,0.3))
+#holoVisible(1, owner(), 0)
+
+

@@ -1,0 +1,74 @@
+@name Ping-O-Matic
+@inputs E:wirelink
+@persist Players:array [PlayerArray PingArray Times]:array AveragePing Lock
+
+function number pingAverage(T:array){
+    local A = 0
+    local B = T
+    local B2 = T:count()
+    foreach (K,V:entity=B){
+        A = A+V:ping()
+    }
+    local Poo = round(A/B2)
+    return Poo
+}
+
+function void timeA(T:array){
+local Answer = T[2,number]-T[1,number]
+print(Answer)
+T:clear()
+}
+interval(150)
+if(clk("interval")){
+AveragePing = pingAverage(Players)
+setName("Ping-O-Matic - Current Ping: " + AveragePing)
+
+if(Lock == 1){
+E:egpColor(1,vec(236,43,43))  
+}elseif(Lock == 0){
+E:egpColor(1,vec(0,255,255))
+}
+if(AveragePing < 80){ 
+E:egpSetText(2,"Defcon 5 - " + round(pingAverage(Players),2))
+E:egpColor(2,vec(50,205,50))
+Lock = 0
+}
+elseif(AveragePing > 90 & AveragePing <= 99){
+E:egpSetText(2,"Defcon 4 - " + round(pingAverage(Players),2))
+E:egpColor(2,vec(0,0,255))
+}
+elseif(AveragePing > 100 & AveragePing <= 109){
+E:egpSetText(2,"Defcon 3 - " + round(pingAverage(Players),2))
+E:egpColor(2,vec(255,255,0))
+}
+elseif(AveragePing > 110 & AveragePing <= 119){
+E:egpSetText(2,"Defcon 2 - "+ round(pingAverage(Players),2))
+E:egpColor(2,vec(255,140,0))
+}
+elseif(AveragePing > 120 & AveragePing <= 129 & Lock == 0){
+Times:pushNumber(realtime())
+printColor(vec(255,0,0),"Defcon 1 - "+ round(pingAverage(Players),2) +", Take immediate action!")
+E:egpSetText(2,"Defcon 1 - " + round(pingAverage(Players),2))
+E:egpColor(2,vec(255,0,0))
+concmd("d3a nolag")
+concmd("say [Ping-O-Matic] LAG DETECTED! All props are now frozen.")
+Lock = 1
+Times:pushNumber(realtime())
+timeA(Times)
+}elseif(AveragePing >= 130){
+E:egpSetText(2,"Defcon 0 - " + round(pingAverage(Players),2))
+E:egpColor(2,vec(255,0,0))
+}
+}
+if(first()){
+Players = players()
+E:egpRoundedBox(1,vec2(150,230),vec2(286,50))
+E:egpColor(1,vec(0,255,255))
+E:egpText(2,"Defcon",vec2(13,210))
+E:egpSize(2,40)
+E:egpOrder(2,3)
+}
+#[for(I=1,Players:count()){
+PlayerArray:pushString(Players[I,entity]:steamID():upper())
+PingArray:pushNumber(Players[I,entity]:ping())
+}]#

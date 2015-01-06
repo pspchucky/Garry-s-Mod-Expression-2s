@@ -1,0 +1,85 @@
+@name BMP back doors
+@inputs Dubs
+@outputs 
+@persist A B OpenLoop CloseLoop
+@trigger 
+interval(1)
+if(first())
+{   
+    #Left Door
+    holoCreate(1)
+    holoModel(1,"hq_rcube_thick")
+    holoPos(1,entity():pos()+vec(0,32.5,0))
+    holoAng(1,entity():toWorld(ang(0,0,0)))
+    holoScale(1,vec(3.5,5,0.5))
+    holoColor(1,vec(100,100,100))
+    #Right Door
+    holoCreate(2)
+    holoModel(2,"hq_rcube_thick")
+    holoPos(2,entity():pos()+vec(0,-32.5,0))
+    holoAng(2,entity():toWorld(ang(0,0,0)))
+    holoScale(2,vec(3.5,5,0.5))
+    holoColor(2,vec(100,100,100))
+   #  for(I=1,2){holoParent(I,entity()) holoColor(I,vec(100,100,100))}
+    
+    holoCreate(3)
+    holoModel(3,"cplane")
+    holoColor(3,vec(0,0,0))
+    holoPos(3,entity():pos()+vec(0,0,0))
+    holoAng(3,entity():toWorld(ang(0,0,0)))
+    holoScale(3,vec(2,2,1))
+    holoParent(3,entity())
+    
+    
+    holoCreate(4)
+    holoPos(4,entity():pos()+vec(0,60,0))
+    holoCreate(5)
+    holoPos(5,entity():pos()+vec(0,-60,0))
+    
+    holoParent(1,4) 
+    holoParent(2,5)
+    holoParent(4,entity())
+    holoParent(5,entity())
+    holoAlpha(4,0)
+    holoAlpha(5,0)
+}
+
+if(clk("open") & A <= 130){
+        holoAng(4,ang(90,50+A,0))
+        holoAng(5,ang(90,-50-A,0))   
+        A++
+        timer("open",10)
+        print(A)
+        }else{
+        stoptimer("open")
+        A=1
+        }
+
+if(clk("close") & B <= 130){
+        holoAng(4,ang(90,180-B,0))
+        holoAng(5,ang(90,-180+B,0))   
+        B++
+        timer("close",10)
+        }else{
+        stoptimer("close")
+        B=1
+        }
+
+if(Dubs == 1){
+OpenLoop = 1
+CloseLoop = 0
+}
+elseif(Dubs == 0){
+OpenLoop = 0
+CloseLoop = 1
+}
+
+if(changed($OpenLoop & OpenLoop)){
+timer("open",5)
+print("open")
+}
+
+if(changed($CloseLoop & CloseLoop)){
+timer("close",5)
+print("close")
+}

@@ -1,0 +1,6 @@
+@name Simple Keypad
+@inputs A1 A2 A3 A4 A5 A6 A7 A8 A9 A0 Enter
+@outputs Open Number
+
+if (A1&A4&A8&A9&Enter) {Open=1}
+else {Open=0}

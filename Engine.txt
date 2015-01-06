@@ -1,0 +1,42 @@
+@name Engine
+@inputs Pod:wirelink  EntityOne:entity EntityTwo:entity
+@outputs Brake LHyd RHyd
+@persist Entity:entity  Brake
+runOnTick(1)
+
+W=Pod["W",number]
+A=Pod["A",number]
+S=Pod["S",number]
+D=Pod["D",number]
+Space=Pod["Space",number]
+Shift=Pod["Shift",number]
+
+
+
+EntityOne:applyAngForce(ang(0,0,W-S)*EntityOne:mass()*100)
+EntityTwo:applyAngForce(ang(0,0,W-S)*EntityTwo:mass()*100)
+
+if (Space){
+    Brake = 1
+}else{
+Brake = 0
+}
+
+if(A==1){
+LHyd = 25
+RHyd = 47
+}else{
+LHyd = 37.32
+RHyd = 37.32
+}
+
+if(D==1){
+LHyd = 47
+RHyd = 25
+}else{
+LHyd = 37.32
+RHyd = 37.32
+}
+
+#37.32 (L)
+#37.37 (R)

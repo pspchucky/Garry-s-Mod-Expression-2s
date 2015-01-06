@@ -1,0 +1,22 @@
+@name Chat announcing
+@inputs 
+@outputs 
+@persist 
+@trigger 
+
+if (first()){
+concmd("say ====================")
+timer("lol",800)
+}
+if (clk("lol")){
+concmd("say ATTENTION SERVER")  
+timer("lol1",800)
+}
+if (clk("lol1")){
+concmd("say Scott is scared of Thomas. Thank you.")  
+timer("lol2",800)
+}
+if (clk("lol2")){
+concmd("say ====================")  
+timer("lol3",800)
+}

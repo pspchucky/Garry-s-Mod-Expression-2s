@@ -1,0 +1,3 @@
+for(I=1,players():count()){
+    print(players()[I,entity]:name()+"'s GMOD resolution is "+egpScrSize(players()[I,entity]):x()+ "x" +egpScrSize(players()[I,entity]):y())
+}

@@ -1,0 +1,15 @@
+@name Door
+@inputs Button
+@outputs Length
+@persist 
+@trigger 
+
+if(Button == 1)
+{
+Length = 381
+}
+
+if(Button == 0)
+{
+Length = 571    
+}

@@ -1,0 +1,19 @@
+@name TrainThing
+@inputs E:wirelink
+@persist I MaxX MaxY MinX MinY
+runOnTick(1)
+if(first()){
+E:egpClear()
+E:egpBoxOutline(1000,vec2(240,-30),vec2(800,800))
+MaxX = 14303.968750
+MinX = -14303.968750
+MinY = -14303.968750
+MaxY = 14303.968750
+}
+Players = players()
+for(I=1,Players:count()){
+E:egpCircle(I,vec2(   Players[I,entity]:pos():x()*0.025 ,   -Players[I,entity]:pos():y()*0.02  ),vec2(4,4))
+E:egpColor(I,teamColor(Players[I,entity]:team()))
+}
+A+=0.001
+print(A)

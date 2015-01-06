@@ -1,0 +1,41 @@
+@name Hydralics
+@inputs 
+@outputs 
+@persist Boom:array Toggle
+@trigger 
+function check(){
+if(chatClk(owner())){
+Boom = owner():lastSaid():explode(" ")
+if(Boom[1,string]:lower() == "$on"){
+hideChat(1)
+Toggle = 1
+}
+if(Boom[1,string]:lower() == "$off"){
+hideChat(1)
+Toggle = 0
+}
+}
+if(Toggle == 0){
+stoptimer("apply")
+stoptimer("apply2")
+}elseif(Toggle == 1){
+timer("apply",1000)
+}
+}
+runOnTick(1)
+runOnChat(1)
+E = entity():isWeldedTo()
+if(first()){
+timer("apply",1000)   
+}
+
+check()
+
+if(clk("apply")){
+E:applyForce(vec(0,0,-100000))
+timer("apply2",0)
+}
+if(clk("apply2")){
+E:applyForce(vec(0,0,320000))
+timer("apply",320)   
+}

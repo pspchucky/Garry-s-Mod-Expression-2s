@@ -1,0 +1,51 @@
+@name TrainFucker
+@inputs 
+@outputs 
+@persist Trains:array I
+@trigger 
+
+if (first()|duped()) {
+    runOnChat(1)
+}
+
+if (chatClk(owner())) {
+    Chat = owner():lastSaid()
+    ChatArr = Chat:explode(" ")
+if (ChatArr[1,string]=="-trainfuck") {
+        hideChat(1)
+            for (I=2, ChatArr:count()) {
+                Target = findPlayerByName(ChatArr[I,string])
+                printColor(vec(255,255,0),"Trainfucking: "+Target:name())
+                if (Target) {
+                    TargetPos = Target:pos()
+                    TAngs = Target:eyeAngles()
+                    FirePos = vec( TargetPos:x()+ 1100*cos(1)*cos(TAngs:yaw()),
+                                   TargetPos:y()+ 1100*cos(1)*sin(TAngs:yaw()),
+                                   TargetPos:z()+ 1100*sin(1))
+                   Dir =  (TargetPos - FirePos):normalized()
+                   #print(Dir)
+                   Train = propSpawn("models/props_vehicles/train_boxcar.mdl", FirePos,Dir:toAngle(), 0)
+                   Train:propGravity(0)
+                   Train:applyForce( Dir*4000*Train:mass() )
+                   Train:soundPlay(I, 10000, "ambient/alarms/train_horn2.wav")
+                   Target:soundPlay(I, 10000, "ambient/alarms/train_horn2.wav")
+                   Train:setMass(10000)
+                   Trains:pushEntity(Train)
+                   Trains:pushNumber(curtime())
+               }
+      }
+}
+}
+
+if (first()|clk()) {
+    interval(500)
+    for (I = 2,Trains:count(),I+100) {
+        if (curtime()-Trains[I, number] > 4) {
+            Trains:remove(I)
+            Trains:removeEntity(I-1):propDelete()
+        }
+    }
+}
+            
+
+

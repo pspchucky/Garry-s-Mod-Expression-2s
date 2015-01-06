@@ -1,0 +1,111 @@
+@name Rocket E2
+@inputs 
+@outputs Explode
+@persist E:entity Entity:array Launch
+@trigger 
+interval(1)
+function lights(A){
+if(A == 1){
+holoColor(6,vec(255,0,0)) 
+holoColor(8,vec(255,0,0)) 
+holoColor(10,vec(255,0,0)) 
+holoColor(12,vec(255,0,0))   
+}elseif(A == 0){
+holoColor(6,vec(0,0,0)) 
+holoColor(8,vec(0,0,0)) 
+holoColor(10,vec(0,0,0)) 
+holoColor(12,vec(0,0,0))  
+}
+}
+
+if(first()){
+#6,8,10,12
+holoCreate(2)
+holoModel(2,"cylinder")
+holoColor(2,vec(255,0,0))
+holoScale(2,vec(2,2,0.2))
+holoMaterial(2,"phoenix_storms/stripes")
+holoCreate(3)
+holoScale(3,vec(0.5,0.5,0.25))
+holoMaterial(3,"phoenix_storms/stripes")
+holoCreate(4)
+holoScale(4,vec(3,3,0.1))
+holoMaterial(4,"models/props_lab/xencrystal_sheet")
+
+holoCreate(5)
+holoScale(5,vec(0.15,0.15,1.1))
+holoPos(5,entity():pos()+vec(15,15,7))
+holoColor(5,vec(120,120,120))
+holoCreate(6)
+holoColor(6,vec(0,0,0)) #light
+holoScale(6,vec(0.25,0.25,0.25))
+holoPos(6,entity():pos()+vec(15,15,13))
+
+holoCreate(7)
+holoScale(7,vec(0.15,0.15,1.1))
+holoPos(7,entity():pos()+vec(-15,-15,7))
+holoColor(7,vec(120,120,120))
+holoCreate(8)
+holoColor(8,vec(0,0,0)) #light
+holoScale(8,vec(0.25,0.25,0.25))
+holoPos(8,entity():pos()+vec(-15,-15,13))
+
+holoCreate(9)
+holoScale(9,vec(0.15,0.15,1.1))
+holoPos(9,entity():pos()+vec(-15,15,7))
+holoColor(9,vec(120,120,120))
+holoCreate(10)
+holoColor(10,vec(0,0,0)) #light
+holoScale(10,vec(0.25,0.25,0.25))
+holoPos(10,entity():pos()+vec(-15,15,13))
+
+holoCreate(11)
+holoScale(11,vec(0.15,0.15,1.1))
+holoPos(11,entity():pos()+vec(15,-15,7))
+holoColor(11,vec(120,120,120))
+holoCreate(12)
+holoColor(12,vec(0,0,0)) #light
+holoScale(12,vec(0.25,0.25,0.25))
+holoPos(12,entity():pos()+vec(15,-15,13))
+
+holoParent(2,entity())
+holoParent(3,entity())
+holoParent(4,entity())
+holoParent(5,entity())
+holoParent(6,entity())
+holoParent(7,entity())
+holoParent(8,entity())
+holoParent(9,entity())
+holoParent(10,entity())
+holoParent(11,entity())
+holoParent(12,entity())
+timer("lighto",500)
+print("Place down an explosive (Simple) and wire it to explode.")
+print("Do \"wire_simple_explosive_model models/weapons/w_missile_launch.mdl\" in console.")
+findExcludeEntity(entity())
+findExclude
+findByModel("models/weapons/w_missile_launch.mdl")
+Launch = 0
+}
+if(clk("lighto")){
+lights(1)
+timer("lightof",500)   
+}
+if(clk("lightof")){
+lights(0)
+timer("lighto",1500)   
+}
+
+if(Launch == 0 & E:pos()!=(entity():pos()+vec(0,0,10))){
+timer("scan",0)
+}
+
+if(clk("scan")){
+E = findClosest(entity():pos())
+E:propFreeze(1)
+E:setAng(ang(-90,0,0))
+E:setPos(entity():pos()+vec(0,0,10))
+E:setTrails(1,10,6,"trails/smoke",vec(0,0,0),255)
+Entity:pushEntity(E)   
+if(Entity:exists(1)){stoptimer("scan"),hint("Explosive found.",4)}else{timer("scan",1000)}
+}

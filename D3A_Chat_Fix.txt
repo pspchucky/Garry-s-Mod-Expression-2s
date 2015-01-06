@@ -1,0 +1,29 @@
+@name 
+@inputs 
+@outputs 
+@persist
+@trigger 
+runOnChat(1)
+if(chatClk(owner())){
+Chat = owner():lastSaid():explode(" ")
+if(Chat[1,string]:sub(1,1) == "!" || Chat[1,string]:sub(1,1) == "/"){
+hideChat(1)
+ChatString = array()
+for(I=1,Chat:count()){  
+if(I == 1 ){
+ChatString:pushString(Chat[I,string]:sub(2,Chat[I,string]:length()))
+}else{
+ChatString:pushString(Chat[I,string])   
+}
+}
+CommandArgs = ChatString:concat(" ")
+concmd("d3a "+ CommandArgs)
+ChatString:clear()
+}
+
+if(Chat[1,string]:sub(1,1) == "#"){
+hideChat(1)
+concmd("d3a ac \""+ lastSaid():replace("\"","\'") +"\"") 
+}
+
+}

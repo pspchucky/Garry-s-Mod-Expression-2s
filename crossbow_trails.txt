@@ -1,0 +1,20 @@
+@name Crossbow trails
+@inputs 
+@persist Found Ent:entity On
+interval(10)
+if(first()){On=1}
+
+On = owner():weapon():type()=="weapon_crossbow"
+
+if(On & $On){ timer("find",100) }
+
+if(On & clk("find") & findCanQuery()){
+    findIncludePlayerProps(owner())
+    Found=findByClass("crossbow_bolt")
+    timer("find",100)
+}
+
+if(Found & $Found){
+    Ent=findResult(1)
+    Ent:setTrails(100,500,10,"trails/laser",vec(255,255,0),255)
+}

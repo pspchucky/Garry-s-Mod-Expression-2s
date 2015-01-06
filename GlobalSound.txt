@@ -1,0 +1,12 @@
+@name GlobalSound
+@persist I K:array
+K = players()
+for(I=1,numPlayers()){
+holoCreate(I)
+holoPos(I,K[I,entity]:pos()+vec(0,0,60))
+holoScale(I,vec(0,0,0))
+holoParent(I,K[I,entity])
+holoEntity(I):soundPlay(I,999," misc/boring_applause_1.wav")
+holoVisible(I,K,0)
+soundVolume(I,100)
+}

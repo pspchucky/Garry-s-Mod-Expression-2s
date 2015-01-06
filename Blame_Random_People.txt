@@ -1,0 +1,5 @@
+interval(1000)
+A = propSpawn("models/mixerman3d/bowling/bowling_ball.mdl",0)
+A:setMass(99999)
+#models/mixerman3d/bowling/bowling_pin.mdl	
+#models/mixerman3d/bowling/bowling_ball.mdl	

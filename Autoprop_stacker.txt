@@ -1,0 +1,15 @@
+@name Autoprop stacker
+@inputs 
+@outputs 
+@persist 
+@trigger 
+timer("2",1000)
+if(clk("2")){
+concmd("+jump")
+timer("3",300)
+}
+if(clk("3")){
+concmd("-jump")
+concmd("gm_spawn models/props_combine/breendesk.mdl")
+timer("2",1000)   
+}

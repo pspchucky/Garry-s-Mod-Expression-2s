@@ -1,0 +1,38 @@
+@name Test
+@inputs 
+@outputs Fire
+@persist Target:entity
+@trigger 
+
+interval(1)
+
+if(first()){
+    findIncludeModel("models/props_vehicles/222_snow_destroyed_gib1.mdl")
+    
+    
+    holoCreate(1)
+    holoParent(1,entity())
+    holoScale(1,vec(0.5,0.5,0.5))
+    holoPos(1,holoEntity(1):toWorld(vec(0,0,20)))
+   # holoAlpha(1,0)
+}
+
+if(owner():keyAttack2())
+{
+        Fire=1
+    }
+    else
+    {
+        Fire=0
+    }
+
+
+if(Target){
+    Target:setPos(holoEntity(1):toWorld(vec(0,0,0)))
+    Target:setAng(owner():eyeAngles()+ang(-180,0,-180))
+    
+    #holoPos(1,owner():pos()+vec(0,0,100))
+}
+
+    findInSphere(holoEntity(1):pos(),100)
+    Target=findClosest(holoEntity(1):pos())

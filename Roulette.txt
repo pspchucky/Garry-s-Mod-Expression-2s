@@ -1,0 +1,58 @@
+@name Roulette
+@inputs 
+@outputs 
+@persist [Red Green Black Sequence]:array
+runOnTick(1)
+runOnChat(1)
+if(first()){
+printColor(vec(255,0,0),"* Welcome to [IJWTB] Cake's Roulette Game *")
+timer("In",2000)
+}
+if(clk("In")){
+printColor(vec(255,0,255),"* The game is now initializing... *")
+Red = array("1","3","5","7","9","12","14","16","18","19","21","23","25","27","30","32","34","36")
+Black = array("2","4","6","8","10","11","13","15","17","20","22","24","26","28","29","31","33","35")
+Green = array("0","00")
+Sequence = array("00","27","10","25","29","12","8","19","31","18","6","21","33","16","4","23","35","14","2","0","28","9","26","30","11","7","20","32","17","5","22","34","15","3","24","36","13","1")
+timer("post",1000)
+}
+
+function string do_roll()
+{
+    local Roll = randint(1,Sequence:count())
+    local Result = Sequence[Roll,string]
+    return Result
+}
+
+function vector checkColor(Number:string)
+{
+
+
+for(I=1,Red:count()){ #Is It Red?
+if(Number == Red[I,string]){
+printColor(vec(255,0,0),"Rolled: " + Number)
+break
+}
+} 
+
+for(I=1,Green:count()){ #Is It Green?
+if(Number == Green[I,string]){
+printColor(vec(0,255,0),"Rolled: " + Number)
+break
+}
+} 
+
+
+for(I=1,Black:count()){ #Is It Black?
+if(Number == Black[I,string]){
+printColor(vec(0,0,0),"Rolled: " + Number)
+break
+}
+} 
+
+
+}
+
+if(clk("post")){
+checkColor(do_roll())
+}

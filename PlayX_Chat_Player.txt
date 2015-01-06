@@ -1,0 +1,11 @@
+@name PlayX Chat Player
+runOnChat(1)
+if(chatClk()){
+    Chat = lastSpoke():lastSaid():explode(" ")
+        if(Chat[1,string]:sub(1,1) == ">"){
+            if(Chat[1,string]:sub(2,8) == "http://" || Chat[1,string]:sub(2,7) == "https://"){
+                concmd("playx_open \"" + Chat[1,string]:sub(2,Chat[1,string]:length()) + "\"")
+            }
+        }
+    }
+ 

@@ -1,0 +1,12 @@
+@name Melon Spam!
+@inputs 
+@outputs 
+@persist 
+@trigger all
+runOnTick(1)
+while (perf()){
+Melon = propSpawn("models/props_junk/watermelon01.mdl",0)
+Melon:setPos(Melon:toWorld(vec(0,0,5000)))
+Melon:propBreak()
+
+}

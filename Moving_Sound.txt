@@ -1,0 +1,15 @@
+@name Moving Sound
+@inputs 
+@outputs 
+@persist X Y Ans
+@trigger 
+runOnTick(1)
+if(first()){
+entity():soundPlay(1,100,"ambience/mechwhine.wav")
+}
+X = 67+floor(abs(entity():vel():x()*0.6))
+Y = 67+floor(abs(entity():vel():y()*0.6))
+Ans = (X+Y)/2 
+soundPitch(1,Ans)
+
+

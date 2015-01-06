@@ -1,0 +1,11 @@
+@name Spinny
+@inputs 
+@outputs 
+@persist T
+@trigger 
+
+runOnTick( 1 )
+T+=1
+holoCreate( 1 )
+holoModel(1, "models/shadertest/vertexlitselfilluminatedtexture" )
+holoPos(1, vec(0,0,T) )

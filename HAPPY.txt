@@ -1,0 +1,29 @@
+@name HAPPY
+@persist [H A P P2 Y]:entity I Home:vector K
+
+runOnTick(1)
+
+Home = entity():pos()
+
+H = holoCreate(1)
+A = holoCreate(2)
+P = holoCreate(3)
+P2 = holoCreate(4)
+Y = holoCreate(5)
+
+holoModel(1,"models/sprops/misc/alphanum/alphanum_h.mdl")
+holoModel(2,"models/sprops/misc/alphanum/alphanum_a.mdl")
+holoModel(3,"models/sprops/misc/alphanum/alphanum_p.mdl")
+holoModel(4,"models/sprops/misc/alphanum/alphanum_p.mdl")
+holoModel(5,"models/sprops/misc/alphanum/alphanum_y.mdl")
+
+for(I=1,5){
+holoScaleUnits(I,vec(10000,10000,10000))
+holoPos(I,Home+vec(I*500,0,1000))
+}
+K+=1
+holoAng(1,ang(0,K,0))   
+holoAng(2,ang(0,K,0))   
+holoAng(3,ang(0,K,0))   
+holoAng(4,ang(0,K,0))   
+holoAng(5,ang(0,K,0))   

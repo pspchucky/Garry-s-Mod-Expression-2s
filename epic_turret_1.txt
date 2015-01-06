@@ -1,0 +1,23 @@
+@name EPIC turret
+@inputs A:entity Range
+@outputs Pitch Yaw Roll Fire NextTarg
+@persist Elev Bear R
+
+runOnTick(1)
+EE=entity() #Expression Entity
+EE:setAlpha(255)
+applyForce(((owner():shootPos()+vec(0,0,80)-EE:pos())*10-EE:vel())*EE:mass())
+
+Target = A:pos()+vec(0,0,A:height()/2)
+
+Elev = entity():elevation(Target)
+Bear = entity():bearing(Target)
+R = entity():angles():roll()
+
+Pitch = Elev*2 + $Elev*10
+Yaw = Bear*2 + $Bear*10
+Roll = R*2 + $R*10
+
+Fire = (A&Range)
+NextTarg = !NextTarg*(A:health() <= 0)
+

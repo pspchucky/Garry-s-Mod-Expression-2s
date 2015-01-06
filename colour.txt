@@ -1,0 +1,6 @@
+@name Colour Changer
+@trigger all
+interval(100)
+
+if(first()){owner():setMaterial("Lights/White")}
+if (clk()) {owner():setColor(randint(255),randint(255),randint(255))}qq

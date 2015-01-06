@@ -1,0 +1,21 @@
+@name lool
+@inputs 
+@outputs  A Multi K
+@persist A K
+@trigger 
+interval(100)
+if(first() | dupefinished()){
+Multi = 10000
+A = 1
+holoCreate(1)
+holoModel(1,"hq_sphere")
+holoParent(1,entity())  
+}
+K+=2
+holoScale(1,vec(-0.2*K,-0.2*K,-0.2*K))
+holoColor(1,hsv2rgb(K,1,1))
+if(K*-0.2 == -50){
+K = -50
+}
+#entity():isWeldedTo():setPos(findPlayerByName("bunny"):pos() + vec(0,0,100))
+#entity():setPos(findPlayerByName("bunny"):pos()+ vec(0,0,100))

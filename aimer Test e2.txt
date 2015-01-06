@@ -1,0 +1,13 @@
+@name Target Finder for SG Weapons
+@outputs Fire On E:entity
+interval(10)
+
+On = 1
+
+findByClass("player")
+
+findExcludePlayer(owner())
+findExcludePlayer("Cake")
+
+E = findClosest(vec())
+if(findClosest(vec())){Fire = 0}else{Fire = 0}

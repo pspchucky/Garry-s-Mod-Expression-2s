@@ -1,0 +1,39 @@
+@name 
+@inputs 
+@outputs 
+@persist N Lock
+@trigger all
+
+if (first()){
+holoCreate(1)
+holoModel(1,"cylinder")
+holoScale(1,vec(7,7,0.1))
+holoColor(1,vec(10,255,10))
+}
+########################################################
+runOnTick(1)
+N+=10
+holoPos(1,owner():aimPos())
+holoAng(1,ang(0,N,0))
+########################################################
+if (Lock == 1){
+holoColor(1,vec(255,10,10))
+owner():soundPlay(10,100,"/ambient/alarms/citadel_alert_loop2.wav")
+timer("1",0)
+}
+#[else{holoColor(1,vec(10,255,10)) Lock = 0}]#
+if(clk("1")){
+Lock = 0
+}
+########################################################
+if (owner():keyAttack2()){
+Lock = 1
+}
+else{Lock = 1}
+#######################################################
+if (owner():keyAttack1() & Lock == 1){
+holoColor(1,vec(255,10,10))
+holoEntity(1):soundPlay(100,1,"/ambient/alarms/apc_alarm_loop1.wav")
+}
+elseif(Lock == 0){soundStop("/ambient/alarms/apc_alarm_loop1.wav")}
+########################################################

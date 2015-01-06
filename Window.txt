@@ -1,0 +1,24 @@
+@name Window
+@inputs E:wirelink
+@outputs 
+@persist 
+@trigger 
+runOnTick(1)
+
+
+if(first()){
+E:egpClear()
+E:egpRoundedBox(1,vec2(256,300),vec2(420,230))
+E:egpColor(1,vec(41,87,255))
+E:egpRoundedBox(2,vec2(256,196),vec2(420,200))
+E:egpColor(2,vec(41,87,255))
+E:egpBox(3,vec2(256,276),vec2(400,200))
+E:egpColor(3,vec(255,255,255))
+E:egpRoundedBoxOutline(4,vec2(256,256),vec2(420,320))
+E:egpSize(4,2)
+E:egpColor(4,vec(41,87,255))
+E:egpRoundedBox(5,vec2(435,130),vec2(32,32))
+E:egpMaterial(5,"icon16/cross.png")
+E:egpMaterial(2,"gui/gradient_down.png")
+E:egpMaterial(1,"gui/gradient_up.png")
+}

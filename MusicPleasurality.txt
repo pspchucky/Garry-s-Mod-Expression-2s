@@ -1,0 +1,121 @@
+@name MusicPleasurality
+@inputs E:wirelink
+@persist Rave:vector Hue Pleasure StoppedPlayers:array NPleasure YPleasure
+@trigger
+interval(1)
+runOnChat(1)
+if(first()){
+E:egpClear()
+
+function void update()
+{
+NPleasure = StoppedPlayers:count()
+E:egpSetText(1,"MusicPleasurality Meter (Updating...)")
+YPleasure = round(-(((players():count())-(NPleasure))/numPlayers())*100,2)
+E:egpSetText(2,"Tracking " + numPlayers() + " players (Pleasure Level: "+(-YPleasure)+"%)")
+E:egpAngle(11,((85)+(YPleasure*1.763))-177)
+}
+
+function void draw()
+{
+E:egpClear()    
+E:egpText(1,"MusicPleasurality Meter (Non-Functional)",vec2(136,56))
+E:egpText(2,"Tracking " + numPlayers() + " players",vec2(136,76))
+
+E:egpWedge(3,vec2(256,356),vec2(220,220))
+E:egpSize(3,180)
+E:egpAngle(3,180)
+E:egpColor(3,vec(127,127,127))
+
+
+E:egpWedge(4,vec2(256,356),vec2(185,185))
+E:egpSize(4,180)
+E:egpAngle(4,180)
+E:egpColor(4,vec(0,0,0))
+
+E:egpWedge(5,vec2(256,356),vec2(185,185))
+E:egpSize(5,180)
+E:egpAngle(5,180)
+E:egpColor(5,vec(190,190,190))
+E:egpMaterial(5,"gui/gradient_up")
+E:egpAlpha(5,30)
+
+E:egpWedgeOutline(7,vec2(256,356),vec2(160,160))
+E:egpSize(7,320)
+E:egpColor(7,vec(255,15,15))
+E:egpAngle(7,180)
+
+
+E:egpWedgeOutline(8,vec2(256,356),vec2(160,160))
+E:egpSize(8,260)
+E:egpColor(8,vec(255,255,15))
+E:egpAngle(8,140)
+
+E:egpWedgeOutline(9,vec2(256,356),vec2(160,160))
+E:egpSize(9,320)
+E:egpColor(9,vec(15,255,15))
+E:egpAngle(9,40)
+
+E:egpWedge(13,vec2(256,357),vec2(159.5,159.5))
+E:egpSize(13,180)
+E:egpAngle(13,180)
+E:egpColor(13,vec(50,50,50))
+
+E:egpBox(10,vec2(0,96),vec2(5,135))
+E:egpColor(10,vec(255,29,22))
+
+E:egpBox(11,vec2(256,356),vec2(10,10))
+E:egpAlpha(11,0)
+#E:egpParent(6,10)
+E:egpParent(10,11)
+
+E:egpWedge(12,vec2(256,356),vec2(30,30))
+E:egpColor(12,vec(127,127,127))
+E:egpSize(12,180)
+E:egpAngle(12,180)
+}
+draw()
+update()
+timer("ChkPleasure",100)
+}
+
+if(clk("ChkPleasure")){
+update()
+timer("ChkPleasure1",1000)
+}
+if(clk("ChkPleasure1")){
+E:egpSetText(1,"MusicPleasurality Meter (Updated!)")
+timer("ChkPleasure",1000)
+}
+Hue+=2
+
+if(Hue>=360){Hue=0}
+
+if(chatClk()){
+if(owner():lastSaid():lower() == "!n"){
+concmd("say This past song had a " + (-YPleasure)+ "% pleasurality level.")
+print("New song, resetting...")
+reset()   
+}
+    
+Chat = lastSpoke():lastSaid():explode(" ")
+if(Chat[1,string]:lower() == "/stop" | Chat[1,string]:lower() == "!stop"){
+for(I=1,numPlayers()){
+if(StoppedPlayers[I,entity] == lastSpoke()){
+print(lastSpoke():name() + " did /stop multiple times >:")
+break
+}elseif(I == StoppedPlayers:count()){
+StoppedPlayers:pushEntity(lastSpoke())
+update()
+print(lastSpoke():name() + " stopped this song!")
+concmd("say This song now has a "+ (-YPleasure)+ "% pleasurality level")
+break
+}   
+}
+}   
+}
+
+#Rave = hsv2rgb(Hue,1,1)
+#E:egpColor(1,Rave)
+#E:egpColor(2,-Rave*0.5)
+#print(90+Hue*0.495)

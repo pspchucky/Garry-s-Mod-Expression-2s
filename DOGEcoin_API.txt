@@ -1,0 +1,47 @@
+@name DOGEcoin API
+@inputs E:wirelink
+@persist Data:string [DOGE DOGEB]:string  A DOGEPrice:array
+@trigger 
+runOnHTTP(1)
+interval(1000)
+Data = httpData():sub(0,100)
+Data = Data:replace("{","")
+Data = Data:replace("}","")
+Data = Data:replace("\"","")
+Data = Data:replace(":"," ")
+Data = Data:replace("ticker","")
+Data = Data:replace("doge","")
+Data = Data:replace(",","")
+Data = Data:replace("usd","")
+Data = Data:replace("btc","")
+Data = Data:replace("mega","")
+if(first()){
+A = 0
+B = A-1
+DOGEPrice = array()
+E:egpClear()
+E:egpText(1,"Realtime DOGE prices",vec2(76,0))
+E:egpSize(1,38)
+timer("K",2000)
+DOGE = "DOGE/BTC:" + Data:sub(0,15)
+E:egpText(3,DOGE,vec2(20,186))
+E:egpSize(3,38) 
+}
+E:egpText(2,time("month") + "/" + time("day") + "/" + time("year") + " " + time("hour") + ":" + time("min") + ":" + time("sec"),vec2(156,36))
+
+if(clk("K")){
+httpRequest("http://dogecoin.org/api/market.json")
+timer("K",2000)   
+}
+if (httpClk()) {
+   # print(time("month") + "/" + time("day") + "/" + time("year") + " " + time("hour") + ":" + time("min") + ":" + time("sec") + " BTC:" + Data:sub(0,15))
+    E:egpSetText(2,time("month") + "/" + time("day") + "/" + time("year") + " " + time("hour") + ":" + time("min") + ":" + time("sec"))
+    A++
+    E:egpSetText(3,DOGE + A)
+   # DOGEPrice:pushString(Data:sub(0,15))
+   # print(DOGEPrice[A,string])
+   # print(Data:sub(0,15))
+    if(DOGEPrice[B,string] != Data:sub(0,15)){
+#print("ATTENTION: PRICE UPDATED!")   
+}
+}

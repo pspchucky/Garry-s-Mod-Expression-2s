@@ -1,0 +1,11 @@
+@name LoopSounds
+@inputs 
+@outputs 
+@persist Sound:string
+@trigger 
+Sound = "vo/breencast/br_welcome01.wav"
+
+timer("Repeat",soundDuration(Sound)*1001)
+if(clk("Repeat")){
+soundPlay(1,soundDuration(Sound),Sound)
+}

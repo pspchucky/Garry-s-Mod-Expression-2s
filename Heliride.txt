@@ -1,0 +1,91 @@
+@name Heliride
+@inputs 
+@outputs 
+@persist I Animations:array K E:entity Reap Chat:array Smooth A ARanger:ranger B MoveSpeed PlayerTarget:string
+
+
+if(first())
+{
+    MoveSpeed = 45
+    interval(10)
+    runOnChat(1)
+    Animations = array("aim_down","weapon_yaw","aim_neutral","aim_up","aim_right","aim_left","deploy","idle","rudder_left","rudder_right")
+    E = entity()
+    Lift = 0
+    holoCreate(1)
+    holoModel(1,"models/combine_helicopter.mdl")
+    holoPos(1,E:pos()+vec(0,0,100))
+    holoAnim(1,-1)
+    holoEntity(1):soundPlay(1,0,"npc/attack_helicopter/aheli_rotor_loop1.wav")
+    holoCreate(2)
+    holoPos(2,ARanger:pos())
+    function void liftOff(Lift)
+    {
+        if(Reap < 360 & Lift == 1)
+        {
+            Reap+=3.88
+            #holoSetPose(1,"weapon_yaw",I)
+            holoPos(1,E:pos()+vec(0,0,120+Reap))
+            holoAng(1,ang(0,Reap,0))
+        }
+    }
+    
+    function void goto(Player:entity)
+    {
+        ARanger = ranger(holoEntity(1),100)
+        holoAng(1, (Player:pos()-holoEntity(1):pos()):toAngle())
+        if((holoEntity(1):pos() * vec(1, 1, 0)):distance(Player:pos() * vec(1, 1, 0)) > 500)
+        {
+            holoPos(1, holoEntity(1):pos() + ((Player:pos()-holoEntity(1):pos()):normalized() * vec(1, 1, 1) * MoveSpeed) )
+        }
+        if(ARanger:hit()){
+            holoPos(1, holoEntity(1):pos() + vec(0,0,1))
+        }
+    }
+}
+
+if(chatClk(owner()))
+{
+    Chat = owner():lastSaid():explode(" ")
+    if(Chat[1,string] == "$on")
+    {
+        liftOff(1)
+        timer("lift",10)
+    }
+    if(Chat[1,string] == "$off")
+    {
+        liftOff(0)  
+        PlayerTarget = ""
+        stoptimer("lift")
+        stoptimer("fly")
+        A = 0
+        B = 0
+        Reap = 0  
+    }  
+
+    if(Chat[1,string] == "$target")
+    { 
+        PlayerTarget = Chat[2,string]
+        if(findPlayerByName(PlayerTarget):isPlayer())
+        {
+            goto(findPlayerByName(PlayerTarget))
+            timer("fly",10)
+        }
+        else
+        {
+            print("Invalid Player!")
+        }
+    }
+}
+
+if(clk("lift"))
+{
+    liftOff(1)
+    timer("lift",0)   
+}
+
+if(clk("fly"))
+{
+    goto(findPlayerByName(PlayerTarget))
+    timer("fly",120)   
+}

@@ -1,0 +1,113 @@
+@name Science is Interesting![Beta][Announcement Spam Beware!]
+@inputs 
+@outputs 
+@persist 
+@trigger 
+if (first()){
+timer("Line1",0)}
+if (clk("Line1")){
+concmd("d3a announce Our Philosophy of new science is this")
+timer("Line2",3000)}
+
+if (clk("Line2")){
+concmd("d3a announce Science is Interesting")
+#[timer("Die",3000)]#
+timer("Line3",3000)
+}
+if (clk("Line3")){
+concmd("d3a announce Science is interesting")
+#[timer("Die",3000)]#
+timer("Line4",1500)
+}
+if (clk("Line4")){
+concmd("d3a announce Science is interesting")
+timer("Line5",2000)
+}
+if (clk("Line5")){
+concmd("d3a announce If you don't agree#Then you can#Fuck off")
+timer("Line6",2000)
+}
+
+if (clk("Line6")){
+concmd("d3a announce Science is interesting")
+timer("Line7",2000)
+}
+if (clk("Line7")){
+concmd("d3a announce Science is interesting")
+timer("Line8",2000)
+}
+
+if (clk("Line8")){
+concmd("d3a announce If you don't agree#Then you can#Fuck offoffofofofo")
+timer("Line9",2500)
+}
+
+if (clk("Line9")){
+concmd("d3a announce Science is interesting")
+timer("Line10",1000)
+}
+if (clk("Line10")){
+concmd("d3a announce Science is interesting")
+timer("Line11",1000)
+}
+
+if (clk("Line11")){
+concmd("d3a announce If you don't agree#Then you can#Fuck offofoffofofofofofof")
+timer("Line12",7500)
+}
+
+if (clk("Line12")){
+concmd("d3a announce Random Gangster Rap#(WAYYYY TO Fast xD)")
+timer("Line13",10000)
+}
+
+if (clk("Line13")){
+concmd("d3a announce Some fucking#weird crazy sounds")
+timer("Line14",3000)
+}
+
+if (clk("Line14")){
+concmd("d3a announce Science is interesting")
+timer("Line15",1500)
+}
+
+if (clk("Line15")){
+concmd("d3a announce Science is interesting")
+timer("Line16",1500)
+}
+
+if (clk("Line17")){
+concmd("d3a announce Science is interesting")
+timer("Line18",1500)
+}
+
+if (clk("Line18")){
+concmd("d3a announce If you don't agree#Then you can#Fuck off#ofofofof")
+timer("Line19",1500)
+}
+
+if (clk("Line19")){
+concmd("d3a announce Science is interesting")
+timer("Line20",1500)
+}
+
+if (clk("Line20")){
+concmd("d3a announce Science is interesting")
+timer("Line21",1500)
+}
+
+if (clk("Line21")){
+concmd("d3a announce If you don't agree#Then you can#Fuck offfffffffff")
+timer("Line22",1500)
+}
+
+if (clk("Line22")){
+concmd("d3a announce *Audience Laughing*")
+timer("Die",0)
+}
+
+
+if (clk("Die")){
+selfDestruct()
+}
+

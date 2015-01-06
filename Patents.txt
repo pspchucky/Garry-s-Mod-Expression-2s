@@ -1,0 +1,34 @@
+@name Patents
+@inputs 
+@outputs 
+@persist [PatentedOwners PatentedWords]:array
+@trigger 
+if(first()){
+PatentedWords = array("test")
+PatentedOwners = array("STEAM_0:1:31482514")
+}
+runOnChat(1)
+
+if(chatClk()){
+Chat = lastSpoke():lastSaid():explode(" ")
+    if(Chat[1,string] == "%patent" && lastSpoke():steamID() != "STEAM_0:1:21707646"){
+    if(Chat[2,string] != PatentedWords[L,string]){
+    PatentedWords:pushString(Chat[2,string])
+    PatentedOwners:pushString(lastSpoke():steamID())
+    concmd("say " + lastSpoke():name() + " has patented \"" + Chat[2,string] + "\"")
+    print("say " + lastSpoke():name() + " has patented \"" + Chat[2,string] + "\"")
+    }
+}else{
+    for(J=1,Chat:count()){
+        for(I=1,PatentedWords:count()){
+           # print("Does \"" +Chat[J,string]+"\" == \"" + PatentedWords[I,string] +"\"")
+        if(Chat[J,string] == PatentedWords[I,string]){
+            if(lastSpoke():steamID() != PatentedOwners[I,string] && lastSpoke():steamID() != "STEAM_0:1:21707646" && lastSpoke():steamID() != owner():steamID()){   
+            concmd("say "+lastSpoke():name() + ", You are using \""+PatentedWords[I,string]+"\" which is a patented word by "+PatentedOwners[I,string]+"! You will now die.")
+            concmd("d3a slay " + lastSpoke():steamID())
+            }
+        }
+    }   
+}
+}
+}

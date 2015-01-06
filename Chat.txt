@@ -1,0 +1,44 @@
+@name ChatBot
+@inputs 
+@outputs 
+@persist TheQuestion:array Answer:string UrlMessageArray:array UrlMessage:string The:string
+@trigger
+
+#Smartest(BrainBot) = 165
+#100897
+#100735
+ 
+runOnHTTP(1)
+runOnChat(1)
+interval(1)
+function void ask(Question:string)
+{
+print("Now asking: " + Question)
+UrlMessageArray = Question:explode(" ")
+#UrlMessage = UrlMessageArray:concat("+"):lower()
+UrlMessage = httpUrlEncode(UrlMessageArray:concat(" "))
+print("http://www.botlibre.com/rest/botlibre/form-chat?instance=100735&conversation=7855191945559597197&message="+UrlMessage)
+httpRequest("http://www.botlibre.com/rest/botlibre/form-chat?instance=100735&conversation=7855191945559597197&message="+UrlMessage)
+timer("wait",3000)
+}
+if(chatClk()){
+Chat = lastSpoke():lastSaid():explode(" ")
+if(Chat[1,string]:lower() == "bot,"){
+for(I=2,Chat:count()){
+TheQuestion:pushString(Chat[I,string])
+}
+The = TheQuestion:concat(" ")
+ask(The)
+TheQuestion:clear()
+}   
+}
+
+
+if(clk("wait")){
+Answer = httpData()
+Answer = Answer:sub(171,Answer:length()-21)
+Answerz = Answer:explode(">")
+concmd("say "+Answerz[2,string])
+print(Answerz[2,string])
+print("Done")
+}

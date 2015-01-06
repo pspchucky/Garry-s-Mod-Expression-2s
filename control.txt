@@ -1,0 +1,31 @@
+@name Control
+@inputs A D W S
+@outputs Mul A Length
+@persist 
+@trigger 
+runOnTick(1)
+if (first()|dupefinished()){
+printColor(vec(10,255,10),"Tank Turret Rotation is ready.")
+Mul = 0
+Length = 257
+print("Length = " + Length)
+}
+if (A == 1){
+A = -5
+}
+else{A = 0}
+
+if (D == 1){
+Mul = 1
+}
+else{Mul = 0}
+
+if (W == 1){
+Length++
+#print("Length = " + Length)
+}
+
+if (S == 1){
+Length--
+#print("Length = " + Length)
+}

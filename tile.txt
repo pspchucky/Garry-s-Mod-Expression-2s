@@ -1,0 +1,8 @@
+@name tile
+@inputs 
+@outputs 
+@persist 
+@trigger 
+#holoCreate(number index,vector position,vector scale,angle ang,vector color,string model)
+holoCreate(1,entity():pos()+vec(0,0,0),vec(2.5,1,1),ang(0,90,0),vec(149,84,54),"models/hunter/plates/plate2x8.mdl")
+holoMaterial(1,"models/debug/debugwhite")

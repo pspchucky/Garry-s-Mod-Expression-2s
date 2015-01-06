@@ -1,0 +1,32 @@
+@name Minge Prop Killer
+@inputs 
+@outputs 
+@persist Minge:entity Props:table Stop
+@trigger 
+
+runOnTick(1)
+if(first()){
+Minge = findPlayerByName("BRYCEinHD")   
+entity():propNotSolid(1)
+Stop = 0
+}
+
+if(Minge:isPlayer() & Minge:isAlive() & Stop == 0){
+Stop = 1
+entity():setPos(Minge:pos()+vec(0,0,40))
+timer("spawn",200)
+timer("Delete",200)
+}
+if(clk("spawn")){
+A = propSpawn("models/props_c17/oildrum001_explosive.mdl",0)
+A:setMass(10000)
+
+Props:pushEntity(A)   
+}
+
+if(clk("Delete")){
+for(I=1,Props:count()){
+Props[I,entity]:propBreak()   
+}
+Stop = 0
+}

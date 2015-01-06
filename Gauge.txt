@@ -1,0 +1,26 @@
+@name Gauge
+@inputs 
+@outputs A
+@persist Speed A I
+@trigger 
+@model models/sprops/trans/misc/gauge_1.mdl
+interval(1)
+if(first()){
+holoCreate(1)
+holoScale(1,vec(0.02,0.15,0.01))
+holoPos(1,entity():pos()+vec(0,0.5,-1))
+holoAng(1,ang(0,90,90))
+holoCreate(2)
+holoScale(2,vec(0.1,0.05,0.05))
+holoPos(2,entity():pos()+vec(0,0,0))
+holoAlpha(2,0)
+holoParent(1,2)
+holoParent(2,entity())
+}
+VelX = entity():vel():x()
+VelY = entity():vel():y()
+VelZ = entity():vel():z()
+Speed=sqrt(VelX^2+VelY^2+VelZ^2)
+A = toUnit("km/h",Speed)
+
+holoAng(2,holoEntity(2):angles()+ang(0,0,-A))

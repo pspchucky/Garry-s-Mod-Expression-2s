@@ -1,0 +1,88 @@
+@name ColorPicker
+@inputs E:wirelink Driver:entity
+@persist CurColor:vector Aim:vector2 Hue CurX
+@trigger 
+runOnTick(1)
+if(first()){
+CurColor = randvec(vec(0,0,0),vec(255,255,255))
+E:egpClear()
+E:egpBox(1,vec2(0,0),vec2(1024,1024))
+E:egpText(3,"Color Picker",vec2(100,55))
+E:egpSize(3,65)
+E:egpBox(4,vec2(256,186),vec2(510,50))
+E:egpColor(4,vec(255,0,0))
+E:egpBox(5,vec2(256,286),vec2(510,50))
+E:egpColor(5,vec(0,255,0))
+E:egpBox(6,vec2(256,386),vec2(510,50))
+E:egpColor(6,vec(0,0,255))
+E:egpBoxOutline(7,vec2(256,186),vec2(510,50))
+E:egpColor(7,vec(0,0,0))
+E:egpSize(7,3)
+E:egpBoxOutline(8,vec2(256,286),vec2(510,50))
+E:egpColor(8,vec(0,0,0))
+E:egpSize(8,3)
+E:egpBoxOutline(9,vec2(256,386),vec2(510,50))
+E:egpColor(9,vec(0,0,0))
+E:egpSize(9,3)
+E:egpBox(11,vec2(round(CurColor:x()*2),186),vec2(10,75))
+E:egpBox(12,vec2(round(CurColor:y()*2),286),vec2(10,75))
+E:egpBox(13,vec2(round(CurColor:z()*2),386),vec2(10,75))
+}
+E:egpCircle(2,vec2(0,0),vec2(10,10))
+E:egpColor(2,vec(255,255,255))
+E:egpOrder(2,100)
+E:egpParentToCursor(2)
+E:egpOrder(2,999)
+Aim = E:egpCursor(Driver)
+User=Driver:driver()
+Click = User:keyAttack1()
+Cursor = E:egpCursor(User)
+Hue+=5
+CurX = Cursor:x()
+if(Hue>=360){Hue=0}
+Vector = hsv2rgb(vec(Hue,1,1))
+E:egpColor(2,Vector)
+if(Click){
+    E:egpColor(2,vec(0,0,0))
+}
+else{
+E:egpColor(2,Vector)
+}
+
+if(changed(User) & User:steamID() != ""){
+Driver:printColorDriver(vec(255,255,0), "\n\n\n\n\n\n\n\nWelcome to Cake's Color Picker")
+Driver:printColorDriver(vec(255,255,0), "Pick colors to your hearts content.")
+}
+
+if( inrange(Cursor, vec2(0,160), vec2(512,210)) ){
+        if(Click){
+                if(CurX >= 0 & CurX <= 512){
+                E:egpPos(11,vec2(CurX,186))
+                CurColor = vec(CurX/2,CurColor:y(),CurColor:z())
+             }
+}
+}
+if( inrange(Cursor, vec2(0,260), vec2(512,310)) ){
+        if(Click){
+                if(CurX >= 0 & CurX <= 512){
+                E:egpPos(12,vec2(CurX,286))
+                CurColor = vec(CurColor:x(),CurX/2,CurColor:z())
+             }
+}
+}
+if( inrange(Cursor, vec2(0,360), vec2(512,410)) ){
+        if(Click){
+                if(CurX >= 0 & CurX <= 512){
+                E:egpPos(13,vec2(CurX,386))
+                CurColor = vec(CurColor:x(),CurColor:y(),CurX/2)
+             }
+}
+}
+E:egpColor(1,CurColor)
+E:egpText(10,"Current Color: (" + round(CurColor:x()) + "," + round(CurColor:y()) + "," + round(CurColor:z()) + ")",vec2(5,470))
+E:egpSize(10,40)
+E:egpColor(11,vec(0,0,0))
+E:egpColor(12,vec(0,0,0))
+E:egpColor(13,vec(0,0,0))
+E:egpColor(3,-CurColor)
+E:egpColor(10,-CurColor)

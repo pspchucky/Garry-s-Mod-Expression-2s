@@ -1,0 +1,36 @@
+@name Minge Explain
+@inputs 
+@outputs 
+@persist 
+@trigger 
+if (duped()){
+    concmd("say You are a Confirmed Minge on this server.")
+    timer("1",2000)
+}
+if (clk("1")){
+    concmd("say You have no rights on this server. You cannot do anything.")
+    timer("2",2000)
+}
+if (clk("2")){
+    concmd("say You must appeal @ vbulletin.thed3vine.net/forumdisplay.php?46-Appeals")
+    timer("3",2000)
+}
+if (clk("3")){
+    concmd("say If you believe you were minged by mistake, look @ this thread.")
+    timer("4",2000)
+}
+if (clk("4")){
+    concmd("say vbulletin.thed3vine.net/showthread.php?1828")
+    timer("5",2000)
+}
+if (clk("5")){
+    concmd("say Look @ the Unexceptable Excuses section & use that as a guide to appeal.")
+    timer("6",2000)
+}
+if (clk("6")){
+    concmd("say Note: You need to make a forum account.")
+    timer("7",3000)
+}
+if (clk("7")){
+    concmd("say That is all -[Expression 2] End")
+}

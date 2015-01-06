@@ -1,0 +1,11 @@
+@name Console Screen Chat
+@inputs CS:wirelink
+@outputs Text:string Player:string Out:string
+runOnChat(1)
+CS[2041]=1
+CS[2041]=0
+Text=lastSaid()
+Player=lastSpoke():name()
+Out=Player + ": " + Text
+CS:writeString(Out,0,0,999,9)
+soundPlay(1,600,"buttons/blip1.wav")

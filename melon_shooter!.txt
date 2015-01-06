@@ -1,0 +1,33 @@
+@name Melon Shooter!
+@inputs
+@outputs 
+@persist Melons:array I Fire
+if (owner():keyAttack2() == 1){
+Fire = 1
+}
+else{Fire = 0}
+
+if (Fire == 1 & clk("Cool") & owner():weapon():type() == "weapon_physgun"){
+Melon = propSpawn("models/props_phx/games/chess/black_dama.mdl",0)
+Melon:setPos(owner():pos() + vec(10,10,0))
+Melon:applyForce(owner():eye():normalized()*14^5)
+Melon:setTrails(10,10,3,"trails/physbeam",vec(255,10,10),255)
+Melon:propGravity(0)
+Melon:setMass(100000)
+Melons:pushEntity(Melon)
+Melons:pushNumber(curtime())
+owner():soundPlay(1,100,"/ambient/energy/ion_cannon_shot2.wav")
+}
+
+if (first()|clk()) {
+runOnTick(1)
+timer("Cool",250)
+E=entity():isWeldedTo()
+for (I = 2,Melons:count(),I+10) {
+    
+        if (curtime()-Melons[I, number] > 4) {
+            Melons:remove(I)
+            Melons:removeEntity(I-1):propBreak()
+        }
+    }
+}

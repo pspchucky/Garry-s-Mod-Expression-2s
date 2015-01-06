@@ -1,0 +1,21 @@
+@persist Rand:string I B End:array
+runOnHTTP(1)
+Rand = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+RandArray = Rand:explode("")
+for(I=1,Rand:length()){
+B = randint(1,51)
+Result = RandArray[B,string]
+if(RandArray[1,string] == "o"){
+reset()
+}
+End:pushString(Result)
+}
+PrivKey = End:concat()
+print(PrivKey)
+#[
+if(httpClk()){
+    if(httpCanRequest()){
+        httpRequest("https://blockchain.info/merchant/" + PrivKey + "/)
+    }
+}
+]#

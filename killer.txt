@@ -1,0 +1,22 @@
+@name killer
+@outputs Gyro:angle
+@persist V:vector
+
+runOnTick(1)
+
+Plate = entity()
+Me = owner()
+
+P = Plate:elevation(Me:aimPos())
+Y = Plate:bearing(Me:aimPos())
+R = Plate:angles():roll()
+
+Gyro = -ang(P,Y,R)*1000
+
+Plate:applyAngForce(Gyro + $Gyro*5)
+
+V = (Me:pos() - Plate:pos() + vec(0,0,100))*500
+
+Plate:applyForce(V + $V*5)
+
+

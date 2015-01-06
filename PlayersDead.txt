@@ -1,0 +1,19 @@
+@name 
+@inputs 
+@outputs 
+@persist Players:array PlayerDead:number Dead:array
+@trigger 
+interval(1000)
+Players = players()
+for(I=1,Players:count()){
+PlayerDead = Players[I,entity]:isAlive()
+if(changed(!PlayerDead)){
+Dead:pushEntity(Players[I,entity])
+}
+}
+if(Dead:count() > 0){
+for(I=1,Dead:count()){
+print(Dead[I,entity]:name())
+}
+Dead:clear()
+}

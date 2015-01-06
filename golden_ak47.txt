@@ -1,0 +1,15 @@
+@name 
+@inputs 
+@outputs 
+@persist 
+@trigger 
+
+holoCreate(1)
+holoModel(1,"models/weapons/w_rif_ak47.mdl")
+holoAng(1,owner():attachmentAng("anim_attachment_RH"))
+holoPos(1,owner():attachmentPos("anim_attachment_RH"))
+holoParentAttachment(1,owner(),"anim_attachment_RH")
+holoScale(1,vec(1,1,1))
+holoPos(1,holoEntity(1):toWorld(vec(0,0,0)))
+holoAng(1,holoEntity(1):toWorld(ang(-10,0,0)))
+holoColor(1,vec(240,230,0))

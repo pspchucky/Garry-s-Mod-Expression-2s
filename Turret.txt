@@ -1,0 +1,39 @@
+@name Turret
+@inputs Driver:entity Mouse1
+@outputs Fire
+@persist Turret:entity SoundLoop EndLoop
+@trigger 
+interval(1)
+if(first()){
+holoCreate(1,entity():pos()+vec(0,0,55))
+holoAlpha(1,30)
+findByModel("models/weapons/w_smg1.mdl")
+findExcludeEntity(findClosest(entity():pos()))
+Turret = findClosest(entity():pos())
+holoParent(1,entity())
+}
+if(changed(holoEntity(1):pos())){
+Turret:setPos(holoEntity(1):pos())   
+}
+User=Driver:driver()
+Turret:setAng(User:eyeAngles())
+
+if(Mouse1 == 1){
+Fire = 1   
+SoundLoop = 1
+EndLoop = 0
+}elseif(Mouse1 == 0){
+Fire = 0
+SoundLoop = 0
+soundStop(0)
+EndLoop = 1
+}
+
+if($SoundLoop & SoundLoop){
+soundPlay(0,0,"weapons/airboat/airboat_gun_loop2.wav")   
+}
+if($EndLoop & EndLoop){
+soundPlay(1,1,"weapons/airboat/airboat_gun_lastshot"+randint(1,2)+".wav")
+}
+
+

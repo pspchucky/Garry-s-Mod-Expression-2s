@@ -1,0 +1,22 @@
+@persist HoloCount
+runOnTick(1)
+if (HoloCount < 250) { #Set 250 to how many you're spawning
+    if ( holoCanCreate() ) {
+        HoloCount++
+        holoCreate(HoloCount)
+        holoPos(HoloCount,entity():pos() + vec(sin(HoloCount)*HoloCount,cos(HoloCount*5)*HoloCount,HoloCount*5)) #How to spawn the holos
+        holoColor(HoloCount,hsv2rgb(HoloCount,1,1))
+        if (HoloCount == 250) {printColor(vec(10,200,255),"Holos Created.") #Do same as you did on line 2 here.
+            timer("rand",0)
+        }
+    }
+}
+else {
+#Use this only if you want to edit individual holograms.
+}
+if(clk("rand")){
+for(I=0,HoloCount){
+holoPos(I, entity():pos() + vec(tan(I)*I,cos(I*5)*I,I*5) )   
+}
+timer("rand",50)
+}

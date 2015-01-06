@@ -1,0 +1,25 @@
+@name Scroll
+@inputs 
+@outputs A:string B:string
+@persist 
+@trigger 
+interval(400)
+if(first()){
+A = "+=+=+=+=+="
+B = "+=+=+=+=+="
+}
+if(A:sub(1,1) == "+"){
+A = A:sub(2,A:length())
+A = A+"="   
+}elseif(A:sub(1,1) == "="){
+A = A:sub(2,A:length())
+A = A+"+"
+}
+
+if(B:sub(1,1) == "+"){
+B = B:sub(2,B:length())
+B = B+"+"   
+}elseif(A:sub(1,1) == "="){
+B = B:sub(2,B:length())
+B = B+"="
+}

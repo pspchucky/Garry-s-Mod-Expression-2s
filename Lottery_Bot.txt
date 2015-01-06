@@ -1,0 +1,20 @@
+@name Lottery Bot
+@persist TimeLeft TimeLeft2 Points
+runOnTick(1)
+if(first()){
+TimeLeft = 59*1000
+Points = randint(25,200)
+printColor(vec(255,0,0),"Creating new Lottery of " + Points)
+concmd("d3a lottery " + Points)
+timer("k",TimeLeft)
+}
+if(clk("k")){
+TimeLeft2 = 184*1000
+concmd("d3a lotto")
+timer("l",TimeLeft2)
+printColor(vec(0,255,0),"Lotto ended. Getting ready for next lotto in 3 minutes...")
+concmd("d3a timer \"[E2] Next Lotto\" \"180\"")
+}
+if(clk("l")){
+reset()
+}

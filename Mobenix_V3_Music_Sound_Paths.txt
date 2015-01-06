@@ -1,0 +1,28 @@
+@name Mobenix_V3 Music Sound Paths
+@inputs 
+@outputs 
+@persist 
+@trigger
+Music = array(
+"music/banana.mp3", #------
+"music/portal_still_alive.mp3", #------
+"music/Portal_Remix.mp3", #------
+"music/loituma.mp3", #------
+"music/tetris.mp3", #------
+"music/vlvx_song24.mp3", #------
+"music/vlvx_song22.mp3", #------
+"music/hl2_song31.mp3", #------
+"music/hl2_song29.mp3", #------
+"music/mbx_techno.mp3", # Song: 10
+"music/D_Smiley_Ball.mp3") # Song: :D
+#soundPlay(1,0,Music[randint(1,Music:count()),string])
+
+#models/spk_easteregg.mdl
+
+soundPlay(1,0,Music[randint(1,11),string])
+#[
+for(I=1,10){
+holoCreate(I)
+holoPos(I,entity():pos())   
+}
+]#

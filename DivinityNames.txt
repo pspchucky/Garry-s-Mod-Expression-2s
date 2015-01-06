@@ -1,0 +1,9 @@
+@persist Divinity:array I
+Divinity = array("Maybe High","More than likely High","Drunkard","Probably High","Stoned Ass","Stoner","Pot Head","Likes Dicks","RAGING HOMOSEXUAL","DivRP is Best Are Pee","High as fuck","Definitely High","Cunt Destoryer")
+timer("go",0)
+if(clk("go")){
+I++
+concmd("d3a settitle TheDivinity \"" + Divinity[I,string] + "\" " + randint(1,255) + " " + randint(1,255) + " " + randint(1,255) )
+if(Divinity:count() == I){selfDestruct()}
+timer("go",100)
+}

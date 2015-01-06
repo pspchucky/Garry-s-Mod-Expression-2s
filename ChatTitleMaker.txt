@@ -1,0 +1,47 @@
+@name ChatTitleMaker
+@persist Chat:array Title:array I
+runOnChat(1)
+runOnLast(1)
+if(first()){
+concmd("d3a settitle _ \"$title for a title!\" " + randint(0,255) + " " + randint(0,255) + " " + randint(0,255))
+timer("Chattalk",0)
+}
+if(chatClk()){
+Chat = lastSpoke():lastSaid():explode(" ")
+if(Chat[1,string] == "$removetitle"){
+concmd("d3a removetitle " + lastSpoke():steamID())
+}
+if(Chat[1,string] == "$title" & Chat[5,string]:length() != 0 & Chat[2,string]:length() != 0 & Chat[3,string]:length() != 0 & Chat[4,string]:length() != 0 & Chat[2,string]:toNumber() <= 255 & Chat[3,string]:toNumber() <= 255 & Chat[4,string]:toNumber() <= 255 & Chat[2,string]:toNumber() >= 0 & Chat[3,string]:toNumber() >= 0& Chat[4,string]:toNumber() >= 0){
+if(Chat[5,string]:sub(1,1) == "#"){
+concmd("d3a pm "+lastSpoke():steamID()+" \"You cannot use # for an unforseen exploit was discovered. Sorry.\"")
+}else{
+for(I=5,Chat:count()){
+Title:pushString(Chat[I,string])
+}
+if(Title:concat(" "):length() <= 30){
+concmd("d3a settitle \"" + lastSpoke():steamID() + "\" \""+ Title:concat(" ") + "\" \""+ Chat[2,string] + "\" \"" +Chat[3,string]+ "\" \""+ Chat[4,string] + "\"")
+print("d3a settitle \"" + lastSpoke():steamID() + "\" \""+ Title:concat(" ") + "\" \""+ Chat[2,string] + "\" \"" +Chat[3,string]+ "\" \""+ Chat[4,string] + "\"")
+Title:clear()
+}else{
+concmd("say Title too long! 30 characters max please. Your title was " + (Title:concat(" "):length()-30) + " characters too long!")
+Title:clear()
+}
+}
+}elseif(Chat[1,string] == "$title"){
+concmd("d3a pm \"" + lastSpoke():steamID() + "\" \"Syntax: $title R G B Your Title Here. (30 characters max)\"")
+}
+}
+if(clk("Chattalk")){
+concmd("say Would you like a title? Say $title")   
+timer("Chattalk2",1700)
+}
+if(clk("Chattalk2")){
+concmd("say Would you like to remove your title? Say $removetitle")
+timer("Chattalk",600000)   
+}
+
+if(last()){ 
+concmd("d3a settitle _ \"E2 removed.\" " + randint(0,255) + " " + randint(0,255) + " " + randint(0,255)) 
+concmd("d3a settitle _ \"No more $title requests.\" " + randint(0,255) + " " + randint(0,255) + " " + randint(0,255)) 
+concmd("d3a settitle _ \"420blazeit\" " + randint(0,255) + " " + randint(0,255) + " " + randint(0,255))   
+}

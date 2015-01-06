@@ -1,0 +1,16 @@
+@name Lights
+@outputs Light:vector Glow
+@inputs Debug 
+@persist Owner:entity 
+@outputs
+@persist Do 
+if (first()) { Do=1
+Glow=100000
+Debug=0}
+Owner=owner()
+Cmd=lastSaid():explode(" "):string(1)
+runOnChat(1)
+if(Cmd=="!start"){ if(Debug==1){ Do=1 hideChat(1) timer("puls",200)
+}}
+if(clk("puls")) { if(Do==1) { Do=0 Light=vec(255,255,0) } else { Do=1 Light=vec(0,255,0) } timer("puls",250)
+}

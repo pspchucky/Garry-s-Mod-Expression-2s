@@ -1,0 +1,76 @@
+@name Cryptocoin ticker beta
+@inputs E:wirelink
+@outputs 
+@persist Request:string I HTTPArray:array HTTP:string MarketID EGPCount URL:string
+@trigger 
+runOnTick(1)
+runOnHTTP(1)
+if(first()){
+URL = "http://pubapi.cryptsy.com/api.php?method=marketdatav2"
+E:egpClear()
+E:egpBox(1,vec2(256,256),vec2(256,256))
+E:egpText(2,"Loading...",vec2(200,256))
+E:egpColor(2,vec(0,0,0))
+E:egpSize(2,30)
+print("Loading...")
+}
+Request = "true"
+if(Request == "true"){
+if(httpCanRequest()){
+httpRequest("http://cryptovegas.net/api/json.php?url=" + URL)
+Request = "false"
+timer("R1",6000)
+}
+}
+
+if(clk("R1")){
+HTTP = httpData()
+timer("R2",1000)
+}
+if(clk("R2")){
+if(HTTP:length() == 0){Request == "true"}
+else{
+print(HTTP:length() + " lines.")
+print(MarketID)
+}
+}
+
+
+
+#[
+if(clk("http")){
+#print("["+HTTPArray[3,string]:replace("\n","")+"]")
+for(I=1,2){
+print(HTTPArray[I,string])
+}
+
+
+if(HTTPArray[1,string] == "\nsuccess"){
+setName("Ticking data from the "+ HTTPArray[4,string]:replace("\n","") + " market.")
+
+
+if (MarketID < EGPCount) {
+    
+    interval(10)
+    if ( egpCanSendUmsg() ) {
+        EGPCount++
+    E:egpRoundedBox(EGPCount,vec2(256/3,25*I),vec2(175,20))
+
+        if (EGPCount == MarketID) {printColor(vec(10,200,255),"EGP Objects Created.")
+
+        }
+    }
+}
+
+for(I=1,MarketID){
+E:egpRoundedBox(I,vec2(256/3,25*I),vec2(175,20))
+}
+
+
+}
+else{
+    print("[HTTP ERROR] Bad gateway. Retrying...")
+    timer("http",5000)
+    }
+}
+]#

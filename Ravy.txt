@@ -1,0 +1,16 @@
+@inputs Buttonz Button
+@outputs Color:vector
+@persist A Hue
+if(Button){
+interval(150)   
+}elseif(Buttonz){
+Color = vec(0,0,0)
+}
+#[if(first()){
+owner():setMaterial("debug/debugdrawflat")
+entity():setMaterial("debug/debugdrawflat")
+}]#
+if(clk("interval") & !Buttonz){
+Hue+=5
+Color = hsv2rgb(vec(Hue,1,1))
+}

@@ -1,0 +1,42 @@
+@name  Red > Yellow > Green
+@inputs 
+@outputs [LightUno LightDos LightTres]:vector
+@persist 
+if (first()){
+#Reserved for later /achievements/achievement_earned.mp3
+interval(1)
+runOnChat(1)
+LightUno = vec(0,0,0)
+LightDos = vec(0,0,0)
+LightTres= vec(0,0,0)
+timer("Begin",1000)
+}
+if (clk("Begin")){
+entity():soundPlay(1,0,"/buttons/blip2.wav")
+printColor(vec(255,0,0),"Starting up...")
+LightUno = vec(255,10,10)
+LightDos = vec(0,0,0)
+LightTres= vec(0,0,0)
+timer("Next",1500)
+}
+if (clk("Next")){
+entity():soundPlay(2,0,"/buttons/blip2.wav")
+LightUno = vec(255,10,10)
+LightDos = vec(255,255,10)
+LightTres= vec(0,0,0)
+timer("Next2",1500)
+}
+if (clk("Next2")){
+entity():soundPlay(3,0,"/buttons/blip2.wav")
+LightUno = vec(255,10,10)
+LightDos = vec(255,255,10) 
+LightTres= vec(10,255,10)
+timer("Next3",1500)
+}
+if (clk("Next3")){
+entity():soundPlay(3,0,"/ambient/energy/powerdown2.wav")
+LightUno = vec(0,0,0)
+LightDos = vec(0,0,0)
+LightTres= vec(0,0,0)
+printColor(vec(10,255,10),"Done ;) Use '-start' to start the lights.")
+}

@@ -1,0 +1,26 @@
+@name Holo Cubes
+@inputs 
+@outputs 
+@persist R:ranger V:vector A:angle Z N Ar:array
+@trigger 
+interval(25)
+timer("A",100)
+if(N<25&clk("A")) {
+N++
+holoCreate(N)
+holoCreate(N*100)
+holoAlpha(N*100,0)
+holoColor(N,randvec()*255)
+Ar[N,vector]=entity():pos()+(randvec()*100):setZ(0)
+Ar[N*1000,number]=random(1,3)
+}
+for(I=1,25) {
+rangerHitWater(1)
+R = rangerOffset(12,holoEntity(I*100):pos()+vec(0,0,6),vec(0,0,-1))
+Ar[I,vector]=Ar[I,vector]+vec(0.71*Ar[I*1000,number],0,0)
+Ar[I+100,angle]=Ar[I+100,angle]+ang(4*Ar[I*1000,number],0,0)
+holoAng(I,Ar[I+100,angle])
+Z = cos(Ar[I+100,angle]:pitch()*4+180)*0.9+8
+holoPos(I,Ar[I,vector]:setZ(Z+R:position():z()))
+holoPos(I*100,Ar[I,vector]:setZ(R:position():z()))
+}

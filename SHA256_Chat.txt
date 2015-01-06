@@ -1,0 +1,25 @@
+@name SHA256 Chat
+@inputs 
+@outputs 
+@persist Message:array Chat:array D:string
+@trigger 
+runOnChat(1)
+runOnHTTP(1)
+if(chatClk()){
+Chat = lastSpoke():lastSaid():explode(" ")
+if(Chat[1,string]:sub(1,5) == "-hash" & httpCanRequest() & Chat[2,string] != ""){
+Chat = lastSpoke():lastSaid():explode("")
+for(I=7,Chat:count()){
+Message:pushString(Chat[I,string])
+}
+Msg = Message:concat()
+print(Msg)
+httpRequest("https://www.yourserver.net/api/sha.php?hash=" + Msg)
+timer("D",430)
+}else{concmd("say Cannot request right now.")}
+}
+if(clk("D")){
+D = httpData()
+concmd("say "+D)
+Message:clear()
+}

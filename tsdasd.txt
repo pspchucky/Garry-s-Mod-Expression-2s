@@ -1,0 +1,14 @@
+@name 
+@inputs 
+@outputs 
+@persist A:entity V C
+@trigger
+runOnTick(1)
+if(first()){
+Pos = entity():pos()
+entity():setPos(Pos + vec(0,0,100))
+A = propSpawn("models/Combine_Helicopter/helicopter_bomb01.mdl",0)
+}
+A:setPos(entity():pos() + vec(0,0,0) + vec(cos(C),0,0))
+V+=1
+C+=cos(curtime()*50)

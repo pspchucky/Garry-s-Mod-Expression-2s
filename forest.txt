@@ -1,0 +1,24 @@
+@name Forest
+@persist A B C H S L Safe
+
+interval(100)
+if(first()){B = 30}
+if(A < 30){
+holoCreate(A)
+holoMaterial(A,"models/props_foliage/oak_tree01")
+
+holoPos(A,vec(random(-80,80),random(-80,80),3)+entity():pos())
+holoScale(A,vec(0.3,0.3,2+H))
+holoModel(A,"cylinder")
+A++}
+if(B < 60){B++
+holoCreate(B)
+holoPos(B,holoEntity(C):pos()+vec(0,0,12+H))
+C = B - 30
+holoModel(B,"cone")
+holoColor(B,vec(random(0,250),255,0))}
+H = random(-0.2,0.2)
+S  = S + 1
+if(S > 50){S = 0}
+if(S == 0){soundPlay(1,1,"ambient/levels/coast/coastbird"+L+".wav")}
+L = round(random(1,5))

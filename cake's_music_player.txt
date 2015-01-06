@@ -1,0 +1,11 @@
+@name Cake's Music Player
+holoCreate(1)
+holoAng(1,owner():attachmentAng("anim_attachment_Head"))
+holoPos(1,owner():attachmentPos("anim_attachment_Head"))
+holoParentAttachment(1,owner(),"anim_attachment_Head")
+holoModel(1,"models/player/items/scout/scout_earbuds.mdl")
+holoScale(1,vec(1,1,1))
+holoPos(1,holoEntity(1):toWorld(vec(0,-10,-74)))
+holoAng(1,holoEntity(1):toWorld(ang(10,90,0)))
+holoEntity(1):soundPlay(1000,100,"music/hl1_song25_remix3.mp3")
+holoVisible(1,owner(),1)

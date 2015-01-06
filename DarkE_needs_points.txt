@@ -1,0 +1,14 @@
+@name DarkE needs points
+@inputs 
+@outputs 
+@persist Winner:entity
+@trigger 
+if(first()){
+concmd("say [E2] Every 5 minutes, there will be a big winner. Values are random from 1 - 1000! Good Luck.")   
+}
+interval(300000)
+Players = players()
+Winner = Players[randint(1,Players:count()),entity]
+concmd("say [E2-Giveaway] " + Winner:name() + " wins this 5 minute random give-a-way!")
+concmd("d3a givepoints \"" + Winner:steamID() + "\" \" " + randint(1,1000) + "\"")
+concmd("d3a timer \"[E2-Giveaway] Next Random Winner\" \"300\"")

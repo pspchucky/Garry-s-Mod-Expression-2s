@@ -1,0 +1,35 @@
+@name TimeCalc
+@inputs 
+@outputs 
+@persist TimeFinal Number
+@trigger 
+runOnChat(1)
+if(first()){
+    
+}
+
+if(chatClk()){
+Chat = lastSpoke():lastSaid():explode(" ") 
+if(Chat[1,string]:lower() == "-calc"){
+if(Chat[2,string]:lower() == "minutes"){
+Number = Chat[3,string]:toNumber()
+TimeFinal = Number/60
+timer("resultMin",777)
+}elseif(Chat[2,string]:lower() == "hours"){
+Number = Chat[3,string]:toNumber()
+TimeFinal = Number/24
+timer("resultHour",777)
+}else{
+timer("replyBad",777)
+}  
+}
+}
+if(clk("resultMin")){
+concmd("say "+Number+" minutes in hours is: " + round(TimeFinal,2) + " hours.")   
+}
+if(clk("resultHour")){
+concmd("say "+Number+" hours in days is: " + round(TimeFinal,2) + " days.")   
+}
+if(clk("replyBad")){
+concmd("say I can only accept 'minutes' & 'hours' as an argument.")   
+}

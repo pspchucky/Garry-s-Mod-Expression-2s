@@ -1,0 +1,589 @@
+@name [Server]PointsDice
+@inputs E:wirelink
+@persist A B C Multiplier Hue Clickz
+@persist Deposit HTDefault LTDefault
+@persist NMulti Bet Yes Ok Click Use AKK Kill Killz
+@persist InfoGUI CoinGUI ChangedV WinDefault Fade Fadez
+@persist User:entity Entity:entity RBPos:vector2
+@persist [Vector]:vector Cursor:vector2 LockControls
+@trigger 
+interval(1)
+
+if(first()){
+A = 0
+B = 0
+C = 0
+Bet = 1
+Yes = 1
+Ok = 1
+InfoGUI = 0
+Kill = 0
+Killz = 0
+HTDefault = 5250
+LTDefault = 4750
+Multiplier = 2
+Deposit = 0
+RBPos = vec2(60,115)
+WinDefault = 1
+GUILock = 0
+Fade = 255
+Fadez = 0
+E:egpClear()
+E:egpBox(1,vec2(256,256),vec2(1000,500))
+E:egpColor(1,vec(200,100,42))
+timer("go",500)
+}
+###########################################################3#
+if(clk("go")){
+E:egpText(2,"Cake's Points Casino",vec2(550,226))
+E:egpColor(2,vec(255,255,0))
+E:egpSize(2,55)
+E:egpBox(3,vec2(256,256),vec2(950,0))
+E:egpColor(3,vec(58,192,24))
+E:egpBoxOutline(4,vec2(256,256),vec2(1000,500))
+E:egpColor(4,vec(0,0,0))
+E:egpSize(4,4)
+timer("slideL",0)
+timer("done",3500) 
+timer("deploy",3250)  
+}
+###################Define Functions... GO.###################
+function slideL()
+{
+if(A < 525){
+A+=10
+E:egpPos(2,vec2(550-A,226))
+}
+return void
+}
+
+function slideUp()
+{
+if(B < 280){
+B+=10
+E:egpPos(2,vec2(550-A,226-B))
+}
+return void
+}
+
+function slideUpTwo()
+{
+if(C < 450){
+C+=17
+E:egpPos(2,vec2(550-A,226-B))
+E:egpSize(3,vec2(950,0+C))
+}
+return void
+}
+
+function drawPopUp()
+{
+    E:egpRoundedBox(100,vec2(256,300),vec2(420,230))
+    E:egpColor(100,vec(41,randint(0,255),255))
+    E:egpRoundedBox(101,vec2(256,196),vec2(420,200))
+    E:egpColor(101,vec(41,randint(0,255),255))
+    E:egpBox(102,vec2(256,276),vec2(400,200))
+    E:egpColor(102,vec(255,255,255))
+    E:egpRoundedBoxOutline(103,vec2(256,256),vec2(420,320))
+    E:egpSize(103,2)
+    E:egpColor(103,vec(41,randint(0,255),255))
+    E:egpBox(104,vec2(435,130),vec2(32,32))
+    E:egpMaterial(104,"icon16/cross.png")
+    E:egpMaterial(101,"gui/gradient_down.png")
+    E:egpMaterial(100,"gui/gradient_up.png")   
+    Entity:soundPlay(888,1,"buttons/blip1.wav")
+}
+
+function removePopUp(UseSound)
+{
+    E:egpRemove(100)
+    E:egpRemove(101)
+    E:egpRemove(102)
+    E:egpRemove(103)
+    E:egpRemove(104)
+    if(UseSound){
+    Entity:soundPlay(888,2,"buttons/button19.wav")   
+    }else{
+    return void
+    }
+    
+}
+
+function deploy()
+{
+E:egpText(5,"(Drag the slider above to change the payout multiplier)",vec2(50,155))
+E:egpRoundedBox(6,vec2(255,115),vec2(410,30))
+E:egpRoundedBoxOutline(7,vec2(255,115),vec2(410,30))
+E:egpSize(7,1.5)
+E:egpColor(7,vec(0,0,0))
+E:egpColor(6,vec(255,0,0))
+E:egpRoundedBox(8,vec2(60,115),vec2(50,50))
+E:egpBox(9,vec2(256,300),vec2(400,75))
+E:egpColor(9,vec(91,195,255))
+E:egpBoxOutline(13,vec2(256,300),vec2(400,75))
+E:egpColor(13,vec(150,216,255))
+E:egpSize(13,3)
+E:egpBox(10,vec2(256,225),vec2(400,75))
+E:egpColor(10,vec(150,216,255))
+E:egpBox(11,vec2(160,263),vec2(5,150))
+E:egpColor(11,vec(150,216,255))
+E:egpBox(12,vec2(300,263),vec2(5,150))
+E:egpColor(12,vec(150,216,255))
+E:egpText(14,"Higher Than",vec2(60,215))
+E:egpSize(14,20)
+E:egpText(15,"Lower Than",vec2(180,215))
+E:egpSize(15,20)
+E:egpText(16,"Win Profit",vec2(325,215))
+E:egpSize(16,24)
+E:egpText(21,"Deposited points remaining: "+ Deposit,vec2(40,455))
+E:egpSize(21,22)
+E:egpText(22,HTDefault:toString(),vec2(90,290))
+E:egpText(23,LTDefault:toString(),vec2(210,290))
+E:egpText(25,"Enter Bet Amount Below ",vec2(135,355))
+E:egpSize(25,25)
+E:egpBox(26,vec2(245,420),vec2(300,40))
+E:egpBoxOutline(27,vec2(245,420),vec2(301,41))
+E:egpColor(27,vec(0,0,0))
+E:egpSize(27,1.5)
+E:egpBox(29, vec2(465,470), vec2(25,25))
+E:egpMaterial(29,"gui/info")
+E:egpBox(30, vec2(425,470), vec2(25,25))
+E:egpMaterial(30,"icon16/coins_delete.png")
+E:egpText(32,"Payout Multiplier: " + Multiplier + "x",vec2(65,50))
+E:egpSize(32,40)
+E:egpBox(45,vec2(415,432), vec2(16,16))
+E:egpMaterial(45,"icon16/delete.png")
+E:egpBox(46,vec2(415,412), vec2(16,16))
+E:egpMaterial(46,"icon16/add.png")
+E:egpBox(47,vec2(440,422), vec2(16,16))
+E:egpMaterial(47,"icon16/accept.png")
+E:egpText(24,WinDefault:toString() + " points",vec2(347,290))
+AKK = 60
+return void
+}
+
+
+function checkText(){
+Entity=entity():isWeldedTo()
+User=entity():isWeldedTo():driver()
+Click = User:keyAttack1()
+Cursor = E:egpCursor(User)
+Hue+=5
+if(Hue>=360){Hue=0}
+Vector = hsv2rgb(vec(Hue,1,1))
+E:egpColor(2,Vector)
+if(Click){
+    E:egpColor(999,vec(0,0,0))
+}
+else{
+E:egpColor(999,vec(255,255,0))
+}
+
+if(changed(User) & User:steamID() != ""){
+Entity:hintDriver("Welcome to Cake's Points Casino!",10)
+Entity:printColorDriver(vec(255,255,0), "\n\n\n\n\n\nYou have "+Deposit+" points deposited here.")
+Entity:printColorDriver(vec(255,0,0), "You cannot deposit points at this point in time.\nThis is a beta; Enjoy the looks.")
+#Entity:printColorDriver(vec(255,255,0), "To deposit points, do /givepoints \"STEAM_0:1:31482514\" \"10\" (or of any value)")
+#Entity:printColorDriver(vec(255,255,0), "The STEAMID is [IJWTB] Cake's so press TAB and copy his STEAMID")   #  \"
+}
+   
+AKK = Cursor:x()
+NMulti = clamp(round(((AKK*Multiplier/8)-15),0),2,100)
+if(Bet <= 0){
+Bet+=1   
+}
+if(Bet >= 10000){
+Bet-=1   
+}
+if(WinDefault >= 1){
+    E:egpPos(24,vec2(347,290))
+}
+if(WinDefault >= 10){
+    E:egpPos(24,vec2(352,290))
+}
+if(WinDefault >= 100){
+    E:egpPos(24,vec2(345,290))
+}
+if(WinDefault >= 1000){
+    E:egpPos(24,vec2(340,290))
+}
+if(WinDefault >= 10000){
+    E:egpPos(24,vec2(332,290))
+}
+if(WinDefault >= 100000){
+    E:egpPos(24,vec2(322,290))
+}
+if(Bet >= 1){
+E:egpText(28,Bet:toString(),vec2(238,407))   
+}
+if(Bet >= 1000){
+E:egpText(28,Bet:toString(),vec2(233,407))
+}
+if(Bet >= 10000){
+E:egpText(28,Bet:toString(),vec2(228,407))
+}
+if(Bet >= 100000){
+E:egpText(28,Bet:toString(),vec2(223,407))
+}
+if(Bet >= 1000000){
+E:egpText(28,Bet:toString(),vec2(218,407))
+}
+if(Bet >= 10000000){
+E:egpText(28,Bet:toString(),vec2(213,407))
+}
+E:egpSize(28,25)
+E:egpColor(28,vec(0,0,0))
+E:egpCircle(999,vec2(0,0),vec2(7,7))
+#E:egpMaterial(999,"GetABetterCursorMaterial")
+E:egpParentToCursor(999)
+
+if(InfoGUI == 0 & CoinGUI == 0){
+    if( inrange(Cursor, vec2(40,85), vec2(470,140)) ){ #The Slider Element
+        if(Click & GUILock == 0){
+                if(Cursor:x() >= 60 & Cursor:x() <= 460){
+                E:egpPos(8,vec2(AKK,115))
+                RBPos = vec2(AKK,115)
+             }
+}
+}
+}
+if(changed(RBPos) & InfoGUI == 0 & CoinGUI == 0){
+E:egpSetText(32,"Payout Multiplier: " + NMulti + "x")
+E:egpSetText(22,    round(10000-(9500/NMulti),0):toString()   )#HT #(10000-(9500/ui.value))
+E:egpSetText(23,    round(9500/NMulti,0):toString()   )#LT #(10000-(9500/ui.value))
+E:egpSetText(24,(Bet*(NMulti-1)):toString() + " points")
+}
+    if( inrange(Cursor, vec2(406,403), vec2(425,421)) ){#Add Bet
+        if( Click & $Click & InfoGUI == 0 & CoinGUI == 0 & LockControls == 0){
+            Bet+=1
+Clickz+=1
+Entity:soundPlay(Clickz,0.1,"buttons/button17.wav")
+E:egpSetText(32,"Payout Multiplier: " + NMulti + "x")
+E:egpSetText(22,    round(10000-(9500/NMulti),0):toString()   )#HT #(10000-(9500/ui.value))
+E:egpSetText(23,    round(9500/NMulti,0):toString()   )#LT #(10000-(9500/ui.value))
+E:egpSetText(24,(Bet*(NMulti-1)):toString() + " points")
+        }
+    }
+
+
+    if( inrange(Cursor, vec2(406,423), vec2(425,441)) ){#Delete Bet
+        if( Click & $Click & InfoGUI == 0 & CoinGUI == 0 & LockControls == 0){
+            Bet-=1
+Clickz+=1
+Entity:soundPlay(Clickz,0.1,"buttons/button18.wav")
+E:egpSetText(32,"Payout Multiplier: " + NMulti + "x")
+E:egpSetText(22,    round(10000-(9500/NMulti),0):toString()   )#HT #(10000-(9500/ui.value))
+E:egpSetText(23,    round(9500/NMulti,0):toString()   )#LT #(10000-(9500/ui.value))
+E:egpSetText(24,(Bet*(NMulti-1)):toString() + " points")
+        }
+    }
+    
+    
+    if( inrange(Cursor, vec2(430,412), vec2(450,432)) ){#Accept bet
+        if( Click & $Click & InfoGUI == 0 & CoinGUI == 0 & LockControls == 0){
+Clickz+=1
+Kill = 0
+Killz = 0
+Fadez = 0
+Fade = 255
+Entity:soundPlay(Clickz,0.1,"buttons/button14.wav")
+E:egpSetText(32,"Payout Multiplier: " + NMulti + "x")
+E:egpSetText(22,    round(10000-(9500/NMulti),0):toString()   )#HT #(10000-(9500/ui.value))
+E:egpSetText(23,    round(9500/NMulti,0):toString()   )#LT #(10000-(9500/ui.value))
+E:egpSetText(24,(Bet*(NMulti-1)):toString() + " points")
+timer("GOZ",0)
+        }
+    }
+    
+
+return void
+}
+
+
+function fadeH(){
+if(Fade > 0){
+Fade-=3.7
+E:egpAlpha(5,Fade)
+E:egpAlpha(9,Fade)
+E:egpAlpha(10,Fade)
+E:egpAlpha(11,Fade)
+E:egpAlpha(12,Fade)
+E:egpAlpha(13,Fade)
+E:egpAlpha(14,Fade)
+E:egpAlpha(15,Fade)
+E:egpAlpha(16,Fade)
+E:egpAlpha(22,Fade)
+E:egpAlpha(23,Fade)
+E:egpAlpha(24,Fade)
+E:egpAlpha(45,Fade)
+E:egpAlpha(46,Fade)
+E:egpAlpha(47,Fade)
+LockControls = 1
+}elseif(Fade < 0){
+Fade = 0
+Kill = 1
+E:egpAlpha(5,Fade)
+E:egpAlpha(9,Fade)
+E:egpAlpha(10,Fade)
+E:egpAlpha(11,Fade)
+E:egpAlpha(12,Fade)
+E:egpAlpha(13,Fade)
+E:egpAlpha(14,Fade)
+E:egpAlpha(15,Fade)
+E:egpAlpha(16,Fade)
+E:egpAlpha(22,Fade)
+E:egpAlpha(23,Fade)
+E:egpAlpha(24,Fade)
+E:egpAlpha(45,Fade)
+E:egpAlpha(46,Fade)
+E:egpAlpha(47,Fade)
+stoptimer("GOZ")
+timer("FadeInN",0)
+return void
+}
+return void
+}
+
+function fadeH2(){
+if(Fadez < 0){
+Fadez+=3.7
+E:egpAlpha(0,Fadez)
+E:egpAlpha(0,Fadez)
+E:egpAlpha(0,Fadez)
+E:egpAlpha(0,Fadez)
+E:egpAlpha(0,Fadez)
+E:egpAlpha(0,Fadez)
+
+#[E:egpAlpha(5,Fadez)
+E:egpAlpha(9,Fadez)
+E:egpAlpha(10,Fadez)
+E:egpAlpha(11,Fadez)
+E:egpAlpha(12,Fadez)
+E:egpAlpha(13,Fadez)
+E:egpAlpha(14,Fadez)
+E:egpAlpha(15,Fadez)
+E:egpAlpha(16,Fadez)
+E:egpAlpha(22,Fadez)
+E:egpAlpha(23,Fadez)
+E:egpAlpha(24,Fadez)
+E:egpAlpha(45,Fadez)
+E:egpAlpha(46,Fadez)
+E:egpAlpha(47,Fadez)]#
+LockControls = 0
+}
+
+if(Fadez <= 255){
+Fadez = 255
+Killz = 1
+#[E:egpAlpha(5,Fadez)
+E:egpAlpha(9,Fadez)
+E:egpAlpha(10,Fadez)
+E:egpAlpha(11,Fadez)
+E:egpAlpha(12,Fadez)
+E:egpAlpha(13,Fadez)
+E:egpAlpha(14,Fadez)
+E:egpAlpha(15,Fadez)
+E:egpAlpha(16,Fadez)
+E:egpAlpha(22,Fadez)
+E:egpAlpha(23,Fadez)
+E:egpAlpha(24,Fadez)
+E:egpAlpha(45,Fadez)
+E:egpAlpha(46,Fadez)
+E:egpAlpha(47,Fadez)]#
+stoptimer("FadeInN")
+LockControls = 0
+return void
+}
+return void
+}
+
+function song()
+{
+Songs = array("music/hl1_song25_remix3.mp3",
+"music/hl2_song20_submix0.mp3",
+"music/hl2_song20_submix4.mp3",
+"music/fortress_reel.wav",
+"music/hl2_song23_suitsong3.mp3",
+"music/hl2_song31.mp3",
+"music/hl2_song4.mp3")
+ANewSong = Songs[randint(1,6),string] #The one that JUST played
+ASong = Songs[randint(1,6),string] #The one that plays
+soundPlay(random(0,0.9),100,ASong) 
+
+if(ANewSong == ASong){
+song()
+}
+
+if(ASong == "music/fortress_reel.wav"){
+timer("newsong",10000)
+}
+
+if(ASong == "music/hl2_song23_suitsong3.mp3"){
+timer("newsong",35500)
+}
+
+}
+
+function guiInfo(){  
+    if( inrange(Cursor, vec2(450,455), vec2(480,485)) ){
+      if( Click & $Click == 1 & InfoGUI == 0 & CoinGUI == 0){
+      drawPopUp()
+E:egpText(17,"BET HI AND GET A NUMBER HIGHER THAN " + round(10000-(9500/NMulti),0):toString() ,vec2(110,225))
+E:egpSize(17,15)
+E:egpText(18,"OR",vec2(260,255))
+E:egpSize(18,15)
+E:egpText(19,"BET LO AND GET A NUMBER LOWER THAN " + round(9500/NMulti,0):toString() ,vec2(110,285))
+E:egpSize(19,15)
+E:egpText(20,"How to Win",vec2(230,200))
+E:egpSize(20,15) 
+
+E:egpColor(17,vec(0,0,0))
+E:egpColor(18,vec(0,0,0))
+E:egpColor(19,vec(0,0,0))
+E:egpColor(20,vec(0,0,0))
+
+
+      InfoGUI = 1
+      E:egpOrder(999,1000)
+      }
+    }
+    if(InfoGUI == 1){
+       if( inrange(Cursor, vec2(420,115), vec2(450,145)) ){
+           if( Click & $Click == 1){
+           removePopUp(1)
+           E:egpRemove(17)
+           E:egpRemove(18)
+           E:egpRemove(19)
+           E:egpRemove(20)
+           InfoGUI = 0
+           E:egpOrder(1000,999)
+           }
+       }
+    }
+}
+
+function guiCoinW(){
+    if( inrange(Cursor, vec2(405,455), vec2(440,485)) ){ 
+      if( Click & $Click == 1 & CoinGUI == 0 & InfoGUI == 0){
+      drawPopUp()
+      E:egpText(17,"Are you sure you want to withdraw?",vec2(145,225))
+      E:egpSize(17,15)
+      E:egpColor(17,vec(0,0,0))
+      E:egpBox(18,vec2(205,285),vec2(80,30))
+      E:egpColor(18,vec(0,255,0))
+      E:egpBox(19,vec2(305,285),vec2(80,30))
+      E:egpColor(19,vec(255,0,0))
+      E:egpText(20,"YES",vec2(195,275))
+      E:egpColor(20,vec(0,0,0))
+      E:egpText(121,"NO",vec2(290,275))
+      E:egpColor(121,vec(0,0,0))
+      CoinGUI = 1
+      E:egpOrder(999,1000)
+      }
+    }
+    if(CoinGUI == 1){
+       if( inrange(Cursor, vec2(265,270), vec2(345,300)) ){#The 'NO' button
+           if( Click & $Click == 1){
+           removePopUp(1)
+           E:egpRemove(17)
+           E:egpRemove(18)
+           E:egpRemove(19)
+           E:egpRemove(20)
+           E:egpRemove(121)
+           CoinGUI = 0
+           E:egpOrder(1000,999)
+           }
+       }
+    
+       if( inrange(Cursor, vec2(165,270), vec2(245,300)) ){#The 'YES' button
+           if( Click & $Click == 1){
+           removePopUp(0)
+           E:egpRemove(17)
+           E:egpRemove(18)
+           E:egpRemove(19)
+           E:egpRemove(20)
+           E:egpRemove(121)
+           Entity:soundPlay(999,1,"buttons/combine_button_locked.wav")
+           Entity:printColorDriver(vec(255,0,0),"You cannot withdraw anything yet! This is just a GUI so far")
+           #Execute /givepoints <player> <amount> because this is a withdrawl function.
+           CoinGUI = 0
+           E:egpOrder(1000,999)
+           }
+       }
+      
+       if( inrange(Cursor, vec2(420,115), vec2(450,145)) ){#The 'X' Button
+           if( Click & $Click == 1){
+           removePopUp(1)
+           E:egpRemove(17)
+           E:egpRemove(18)
+           E:egpRemove(19)
+           E:egpRemove(20)
+           E:egpRemove(121)
+           CoinGUI = 0
+           E:egpOrder(1000,999)
+           }
+       }
+    }
+}
+
+function clearSound(){
+soundStop(1,999)   
+}
+###################Define Functions... STOP.###################
+
+
+if(clk("slideL")){
+slideL()
+timer("slideL",0)
+}
+if(A == 530){
+stoptimer("slideL")
+timer("slideUp",1000)
+timer("slideUp2",1000)
+}
+
+if(clk("slideUp") & Yes == 1){
+slideUp()
+timer("slideUp",0)
+}
+
+if(clk("slideUp2") & Yes == 1){
+slideUpTwo()
+timer("slideUp2",0)
+}
+
+if(B == 280 & Ok == 1){
+stoptimer("slideUp")
+}
+
+if(C == 459 & Ok == 1){
+stoptimer("slideUp2")
+}
+
+if(clk("deploy")){
+deploy()
+}
+if(clk("done")){
+soundPlay(2,2,"garrysmod/save_load"+ randint(1,4) +".wav")  
+timer("Infini",0)
+Ok = 0
+Yes = 0
+}
+
+if(clk("Infini")){
+checkText() 
+guiInfo()
+guiCoinW()
+timer("Infini",0)
+}
+
+
+if(clk("GOZ") & Kill == 0){
+fadeH()
+timer("GOZ",0)   
+}
+
+if(clk("FadeInN") & Killz == 0){
+fadeH2()
+timer("FadeInN",0)
+}

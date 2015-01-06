@@ -1,0 +1,17 @@
+@name GO (holo)
+@inputs 
+@outputs 
+@persist 
+@trigger 
+#holoCreate(number index,vector position,vector scale,angle ang,vector color,string model)
+if(first()){
+holoCreate(1,entity():pos()+vec(45,45,-9),vec(10,10,10),ang(0,45,90),vec(0,0,0),"models/sprops/misc/alphanum/alphanum_g.mdl")
+holoCreate(2,entity():pos()+vec(-45,-45,-9),vec(10,10,10),ang(0,45,90),vec(0,0,0),"models/sprops/misc/alphanum/alphanum_o.mdl")
+holoCreate(3,entity():pos()+vec(-38,125,-3),vec(4,4,4),ang(0,45,90),vec(0,0,0),"models/sprops/misc/alphanum/alphanum_dlsign.mdl")
+holoCreate(4,entity():pos()+vec(-70,100,-3),vec(4,4,4),ang(0,45,90),vec(0,0,0),"models/sprops/misc/alphanum/alphanum_2.mdl")
+holoCreate(5,entity():pos()+vec(-95,75,-3),vec(4,4,4),ang(0,45,90),vec(0,0,0),"models/sprops/misc/alphanum/alphanum_0.mdl")
+holoCreate(6,entity():pos()+vec(-120,50,-3),vec(4,4,4),ang(0,45,90),vec(0,0,0),"models/sprops/misc/alphanum/alphanum_0.mdl")
+for(I=1,6){
+holoParent(I,entity())   
+}
+}
